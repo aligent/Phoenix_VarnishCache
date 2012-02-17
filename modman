@@ -1,0 +1,12 @@
+# Phoenix_VarnishCache definition
+Phoenix/VarnishCache			app/code/community/Phoenix/VarnishCache
+README_VARNISH_CACHE.txt		README_VARNISH_CACHE.txt
+varnishcache.xml			app/etc/varnishcache.xml
+modules/Phoenix_VarnishCache.xml	app/etc/modules/Phoenix_VarnishCache.xml
+de_DE/Phoenix_VarnishCache.csv		app/locale/de_DE/Phoenix_VarnishCache.csv
+en_US/Phoenix_VarnishCache.csv		app/locale/en_US/Phoenix_VarnishCache.csv
+es_ES/Phoenix_VarnishCache.csv		app/locale/es_ES/Phoenix_VarnishCache.csv
+fr_FR/Phoenix_VarnishCache.csv		app/locale/fr_FR/Phoenix_VarnishCache.csv
+modman
+nb_NO/Phoenix_VarnishCache.csv		app/locale/nb_NO/Phoenix_VarnishCache.csv
+
