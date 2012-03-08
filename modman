@@ -8,4 +8,5 @@ en_US/Phoenix_VarnishCache.csv		app/locale/en_US/Phoenix_VarnishCache.csv
 es_ES/Phoenix_VarnishCache.csv		app/locale/es_ES/Phoenix_VarnishCache.csv
 fr_FR/Phoenix_VarnishCache.csv		app/locale/fr_FR/Phoenix_VarnishCache.csv
 nb_NO/Phoenix_VarnishCache.csv		app/locale/nb_NO/Phoenix_VarnishCache.csv
-
+adminhtml/default/default/layout/varnishcache.xml	app/design/adminhtml/default/default/layout/varnishcache.xml
+adminhtml/default/default/template/varnishcache		app/design/adminhtml/default/default/template/varnishcache
