@@ -165,6 +165,35 @@
                     </phoenix_varnishcache>
                 </observers>
             </cms_page_save_after>
+            
+            <controller_action_postdispatch_customer_account_loginPost>
+                <observers>					
+                    <dynamic_header_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setDynamicHeaderCookie</method>
+                    </dynamic_header_update>					
+                </observers>
+            </controller_action_postdispatch_customer_account_loginPost>
+            <controller_action_postdispatch_customer_account_logout>
+                <observers>
+                    <dynamic_header_delete>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>unsetDynamicHeaderCookie</method>
+                    </dynamic_header_delete>
+                </observers>
+            </controller_action_postdispatch_customer_account_logout>
+            <controller_action_postdispatch_checkout_cart_index>
+                <observers>					
+                    <cart_header_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setDynamicHeaderCookie</method>
+                    </cart_header_update>					
+                </observers>
+            </controller_action_postdispatch_checkout_cart_index>
+            
         </events>
     </adminhtml>
     <frontend>
@@ -251,6 +280,22 @@ wishlist]]></disable_routes>
                 <purge_cms_page>0</purge_cms_page>
                 <debug>0</debug>
             </varnishcache>
+            <personalisation_cookie>
+                <enabled>1</enabled>
+                <cookie_key>personalisation</cookie_key>
+                <send_cart_count>1</send_cart_count>
+                <selector_cart_count>#cart-count</selector_cart_count>
+                <send_cart_subtotal>1</send_cart_subtotal>
+                <selector_cart_subtotal>#cart-subtotal</selector_cart_subtotal>
+                <send_wishlist_count>1</send_wishlist_count>
+                <selector_wishlist_count>#wishlist-count</selector_wishlist_count>
+                <send_customer_first_name>0</send_customer_first_name>
+                <selector_customer_first_name>#customer-first-name</selector_customer_first_name>
+                <send_customer_full_name>0</send_customer_full_name>
+                <selector_customer_full_name>#customer-full-name</selector_customer_full_name>
+                <send_customer_email>0</send_customer_email>
+                <selector_customer_email>#customer-email</selector_customer_email>
+            </personalisation_cookie>
         </system>
     </default>
 </config>
