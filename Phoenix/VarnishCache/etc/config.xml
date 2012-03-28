@@ -168,6 +168,13 @@
         </events>
     </adminhtml>
     <frontend>
+        <layout>
+            <updates>
+                <testimonial>
+                    <file>testimonial.xml</file>
+                </testimonial>
+            </updates>
+        </layout>
         <events>
             <!-- add cache headers -->
             <controller_action_postdispatch>
