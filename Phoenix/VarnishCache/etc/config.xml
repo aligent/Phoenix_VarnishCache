@@ -165,35 +165,6 @@
                     </phoenix_varnishcache>
                 </observers>
             </cms_page_save_after>
-            
-            <controller_action_postdispatch_customer_account_loginPost>
-                <observers>					
-                    <dynamic_header_update>
-                        <type>singleton</type>						
-                        <class>varnishcache/personalisationcookie</class>
-                        <method>setDynamicHeaderCookie</method>
-                    </dynamic_header_update>					
-                </observers>
-            </controller_action_postdispatch_customer_account_loginPost>
-            <controller_action_postdispatch_customer_account_logout>
-                <observers>
-                    <dynamic_header_delete>
-                        <type>singleton</type>
-                        <class>varnishcache/personalisationcookie</class>
-                        <method>unsetDynamicHeaderCookie</method>
-                    </dynamic_header_delete>
-                </observers>
-            </controller_action_postdispatch_customer_account_logout>
-            <controller_action_postdispatch_checkout_cart_index>
-                <observers>					
-                    <cart_header_update>
-                        <type>singleton</type>						
-                        <class>varnishcache/personalisationcookie</class>
-                        <method>setDynamicHeaderCookie</method>
-                    </cart_header_update>					
-                </observers>
-            </controller_action_postdispatch_checkout_cart_index>
-            
         </events>
     </adminhtml>
     <frontend>
@@ -231,16 +202,44 @@
                         <class>varnishcache/observer</class>
                         <method>disablePageCachingPermanent</method>
                     </varnishcache>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
                 </observers>
             </checkout_cart_product_add_after>
+            <checkout_cart_update_items_after>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
+                </observers>
+            </checkout_cart_update_items_after>
             <customer_login>
                 <observers>
                     <varnishcache>
                         <class>varnishcache/observer</class>
                         <method>disablePageCachingPermanent</method>
                     </varnishcache>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
                 </observers>
             </customer_login>
+            <customer_logout>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
+                </observers>
+            </customer_logout>
             <catalog_product_compare_add_product>
                 <observers>
                     <varnishcache>
@@ -255,8 +254,42 @@
                         <class>varnishcache/observer</class>
                         <method>disablePageCachingPermanent</method>
                     </varnishcache>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
                 </observers>
             </wishlist_add_product>
+            <wishlist_update_item>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
+                </observers>
+            </wishlist_update_item>
+
+            <controller_action_postdispatch_checkout_cart_index>
+                <observers>					
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
+                </observers>
+            </controller_action_postdispatch_checkout_cart_index>
+            <checkout_onepage_controller_success_action>
+                <observers>					
+                    <personalisation_cookie_update>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>					
+                </observers>
+            </checkout_onepage_controller_success_action>
+        
         </events>
     </frontend>
     <default>
