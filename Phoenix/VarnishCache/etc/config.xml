@@ -209,14 +209,9 @@
                         <class>varnishcache/observer</class>
                         <method>disablePageCachingPermanent</method>
                     </varnishcache>
-                    <personalisation_cookie_update>
-                        <type>singleton</type>						
-                        <class>varnishcache/personalisationcookie</class>
-                        <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
                 </observers>
             </checkout_cart_product_add_after>
-            <checkout_cart_update_items_after>
+            <checkout_cart_save_after>
                 <observers>
                     <personalisation_cookie_update>
                         <type>singleton</type>						
@@ -224,7 +219,7 @@
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>					
                 </observers>
-            </checkout_cart_update_items_after>
+            </checkout_cart_save_after>
             <customer_login>
                 <observers>
                     <varnishcache>
