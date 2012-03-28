@@ -170,9 +170,9 @@
     <frontend>
         <layout>
             <updates>
-                <testimonial>
-                    <file>testimonial.xml</file>
-                </testimonial>
+                <varnishcache>
+                    <file>varnishcache.xml</file>
+                </varnishcache>
             </updates>
         </layout>
         <events>
