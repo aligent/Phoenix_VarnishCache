@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <layout version="0.1.0">
     <default>
-        <reference name="after_body_start">
+        <reference name="head">
             <block type="varnishcache/personalisationcookie" name="personalisationcookie" template="varnishcache/personalisationcookie.phtml" />
         </reference>
     </default>
