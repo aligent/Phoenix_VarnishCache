@@ -1,5 +1,53 @@
-<script>
-    Event.observe(document, 'dom:loaded', function() {
-        alert("W00t!1!");
-    })
-</script>
+<?php if ($this->isEnabled()): ?>
+    <script>
+        Event.observe(document, 'personalisationcookie:render', function() {
+            var vCookieName = '<?php echo $this->getCookieKey(); ?>';
+            var aResults = document.cookie.match ( '(^|;) ?' + vCookieName + '=([^;]*)(;|$)' );
+            if (aResults){
+                var vCookie = unescape (aResults[2]);
+                if(vCookie != ''){
+                    var aCookieData = JSON.parse(vCookie);
+                    
+                    <?php if ($this->isCartCountEnabled()): ?>
+                        $$('<?php echo $this->getCartCountSelector(); ?>').each(function(el) {
+                            el.update(aCookieData['cart_count'].toString().split('+').join(' '));
+                        });
+                    <?php endif; ?>
+                    
+                    <?php if ($this->isCartSubtotalEnabled()): ?>
+                        $$('<?php echo $this->getCartSubtotalSelector(); ?>').each(function(el) {
+                            el.update(aCookieData['cart_subtotal'].toString().split('+').join(' '));
+                        });
+                    <?php endif; ?>
+                    
+                    <?php if ($this->isWishlistCountEnabled()): ?>
+                        $$('<?php echo $this->getWishlistCountSelector(); ?>').each(function(el) {
+                            el.update(aCookieData['wishlist_count'].toString().split('+').join(' '));
+                        });
+                    <?php endif; ?>
+                    
+                    <?php if ($this->isCustomerFirstNameEnabled()): ?>
+                        $$('<?php echo $this->getCustomerFirstNameSelector(); ?>').each(function(el) {
+                            el.update(aCookieData['customer_first_name'].split('+').join(' '));
+                        });
+                    <?php endif; ?>
+                    
+                    <?php if ($this->isCustomerFullNameEnabled()): ?>
+                        $$('<?php echo $this->getCustomerFullNameSelector(); ?>').each(function(el) {
+                            el.update(aCookieData['customer_full_name'].split('+').join(' '));
+                        });
+                    <?php endif; ?>
+                    
+                    <?php if ($this->isCustomerEmailEnabled()): ?>
+                        $$('<?php echo $this->getCustomerEmailSelector(); ?>').each(function(el) {
+                            el.update(aCookieData['customer_email'].split('+').join(' '));
+                        });
+                    <?php endif; ?>
+                }
+            }
+        })
+        Event.observe(document, 'dom:loaded', function() {
+            Event.fire(document, 'personalisationcookie:render');
+        })
+    </script>
+<?php endif; ?>
