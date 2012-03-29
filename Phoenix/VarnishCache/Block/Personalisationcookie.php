@@ -1,6 +1,30 @@
 <?php
     
 class Phoenix_Varnishcache_Block_Personalisationcookie extends Mage_Core_Block_Template {
+    const CACHE_LIFETIME = 14400; // 4hrs
+    
+    public function _construct() {
+        $this->addData(
+            array(
+                'cache_lifetime' => self::CACHE_LIFETIME,
+                'cache_tags' => array(Mage_Core_Model_Config::CACHE_TAG)
+            )
+        );
+    }
+    
+    public function getCacheKeyInfo() {
+        return array(
+            Mage::app()->getStore()->getId(),
+            (int)Mage::app()->getStore()->isCurrentlySecure(),
+            Mage::getDesign()->getPackageName(),
+            Mage::getDesign()->getTheme('template'),
+            Mage::getSingleton('customer/session')->isLoggedIn(),
+            $this->getTemplate(),
+        );
+        
+    }
+    
+    
     public function isEnabled() {
         if (!$this->getData('enabled')) {
             $this->setData('enabled', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Personalisationcookie::CONFIG_ENABLED));
