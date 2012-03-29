@@ -22,6 +22,12 @@ class Phoenix_VarnishCache_Model_Observer
 {
     const SET_CACHE_HEADER_FLAG = 'VARNISH_CACHE_CONTROL_HEADERS_SET';
 
+    const CONFIG_DISABLE_ON_ADD_MESSAGE     = 'system/varnishcache/disable_on_add_message';
+    const CONFIG_DISABLE_ON_ADD_TO_CART     = 'system/varnishcache/disable_on_add_to_cart';
+    const CONFIG_DISABLE_ON_LOGIN           = 'system/varnishcache/disable_on_login';
+    const CONFIG_DISABLE_ON_ADD_TO_COMPARE  = 'system/varnishcache/disable_on_add_to_compare';
+    const CONFIG_DISABLE_ON_ADD_TO_WISHLIST = 'system/varnishcache/disable_on_add_to_wishlist';
+    
     /**
      * Retrieve session model
      *
@@ -183,7 +189,65 @@ class Phoenix_VarnishCache_Model_Observer
         }
         return $this;
     }
-
+    
+    
+    /**
+     * If the supplied parameter indicates that page caching can be disabled, do so.
+     * @param string $param The path of the parameter to check.
+     * @return \Phoenix_VarnishCache_Model_Observer 
+     */
+    private function _checkDisablePageCachingPermanaent($param) {
+        if (Mage::getStoreConfig($param)) {
+            return $this->disablePageCachingPermanent();
+        }
+        return $this;
+    }
+    
+    /**
+     * If the parameter is turned on, disable page caching.
+     * @param Varien_Event_Observer $observer
+     * @return type 
+     */
+    public function checkDisableCachingOnAddMessage($observer) {
+        return $this->_checkDisablePageCachingPermanaent(self::CONFIG_DISABLE_ON_ADD_MESSAGE);
+    }
+    
+    /**
+     * If the parameter is turned on, disable page caching.
+     * @param Varien_Event_Observer $observer
+     * @return type 
+     */
+    public function checkDisableCachingOnAddToCart($observer) {
+        return $this->_checkDisablePageCachingPermanaent(self::CONFIG_DISABLE_ON_ADD_TO_CART);
+    }
+    
+    /**
+     * If the parameter is turned on, disable page caching.
+     * @param Varien_Event_Observer $observer
+     * @return type 
+     */
+    public function checkDisableCachingOnLogin($observer) {
+        return $this->_checkDisablePageCachingPermanaent(self::CONFIG_DISABLE_ON_LOGIN);
+    }
+    
+    /**
+     * If the parameter is turned on, disable page caching.
+     * @param Varien_Event_Observer $observer
+     * @return type 
+     */
+    public function checkDisableCachingOnAddToCompare($observer) {
+        return $this->_checkDisablePageCachingPermanaent(self::CONFIG_DISABLE_ON_ADD_TO_COMPARE);
+    }
+    
+    /**
+     * If the parameter is turned on, disable page caching.
+     * @param Varien_Event_Observer $observer
+     * @return type 
+     */
+    public function checkDisableCachingOnAddToWishlist($observer) {
+        return $this->_checkDisablePageCachingPermanaent(self::CONFIG_DISABLE_ON_ADD_TO_WISHLIST);
+    }
+    
     /**
      * Purge category
      *

@@ -199,7 +199,7 @@
                 <observers>
                     <varnishcache>
                         <class>varnishcache/observer</class>
-                        <method>disablePageCachingPermanent</method>
+                        <method>checkDisableCachingOnAddMessage</method>
                     </varnishcache>
                 </observers>
             </core_session_abstract_add_message>
@@ -207,7 +207,7 @@
                 <observers>
                     <varnishcache>
                         <class>varnishcache/observer</class>
-                        <method>disablePageCachingPermanent</method>
+                        <method>checkDisableCachingOnAddToCart</method>
                     </varnishcache>
                 </observers>
             </checkout_cart_product_add_after>
@@ -224,7 +224,7 @@
                 <observers>
                     <varnishcache>
                         <class>varnishcache/observer</class>
-                        <method>disablePageCachingPermanent</method>
+                        <method>checkDisableCachingOnLogin</method>
                     </varnishcache>
                     <personalisation_cookie_update>
                         <type>singleton</type>						
@@ -246,7 +246,7 @@
                 <observers>
                     <varnishcache>
                         <class>varnishcache/observer</class>
-                        <method>disablePageCachingPermanent</method>
+                        <method>checkDisableCachingOnAddToCompare</method>
                     </varnishcache>
                 </observers>
             </catalog_product_compare_add_product>
@@ -254,7 +254,7 @@
                 <observers>
                     <varnishcache>
                         <class>varnishcache/observer</class>
-                        <method>disablePageCachingPermanent</method>
+                        <method>checkDisableCachingOnAddToWishlist</method>
                     </varnishcache>
                     <personalisation_cookie_update>
                         <type>singleton</type>						
@@ -308,6 +308,11 @@ moneybookers
 paypal
 wishlist]]></disable_routes>
                 <disable_caching_vars><![CDATA[___store,___SID,currency,order]]></disable_caching_vars>
+                <disable_on_add_message>1</disable_on_add_message>
+                <disable_on_add_to_cart>1</disable_on_add_to_cart>
+                <disable_on_login>1</disable_on_login>
+                <disable_on_add_to_compare>1</disable_on_add_to_compare>
+                <disable_on_add_to_wishlist>1</disable_on_add_to_wishlist>                
                 <ttl>14400</ttl>
                 <routes_ttl>a:3:{s:1:"1";a:2:{s:6:"regexp";s:3:"cms";s:5:"value";s:5:"86400";}s:1:"2";a:2:{s:6:"regexp";s:20:"catalog_product_view";s:5:"value";s:4:"7200";}s:1:"3";a:2:{s:6:"regexp";s:16:"catalog_category";s:5:"value";s:5:"21600";}}</routes_ttl>
                 <purge_catalog_category>0</purge_catalog_category>
