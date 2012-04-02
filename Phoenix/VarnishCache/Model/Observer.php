@@ -328,4 +328,41 @@ class Phoenix_VarnishCache_Model_Observer
         }
         return $this;
     }
+    
+    /**
+     * Purge Blog post for comment
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Phoenix_VarnishCache_Model_Observer
+     */
+    public function purgeBlogByComment(Varien_Event_Observer $observer) {
+        $iPostId = $observer->getEvent()->getObject()->getPostId();
+        $oPost = Mage::getModel('blog/post')->load($iPostId);
+        return $this->_purgeBlogByPost($oPost);
+    }
+    
+    /**
+     * Purge Blog post for update/create
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Phoenix_VarnishCache_Model_Observer
+     */
+    public function purgeBlogByPost(Varien_Event_Observer $observer) {
+        $oPost = $observer->getEvent()->getObject();
+        return $this->_purgeBlogByPost($oPost);
+    }
+    
+    private function _purgeBlogByPost($oPost) {
+        try {
+            if (!Mage::registry('varnishcache_blog_purged_' . $oPost->getId())) {
+                Mage::getModel('varnishcache/control_blog')->purge($oPost);
+                Mage::register(('varnishcache_blog_purged_' . $oPost->getId()), true);
+            }
+        } catch (Exception $e) {
+            Mage::helper('varnishcache')->debug('Error on save blog post purging: '.$e->getMessage());
+        }
+        return $this;
+        
+    }
+    
 }
