@@ -1,0 +1,37 @@
+From c2d02327387d5b17d5b53b88cf07f7ca262a971d Mon Sep 17 00:00:00 2001
+From: Jim O'Halloran <jim@aligent.com.au>
+Date: Tue, 13 Mar 2012 16:15:13 +1030
+Subject: [PATCH] SPW-450 Purge Varnish cache after blog post or comments are saved.
+
+---
+ app/code/community/AW/Blog/Model/Comment.php |    1 +
+ app/code/community/AW/Blog/Model/Post.php    |    1 +
+ 2 files changed, 2 insertions(+), 0 deletions(-)
+
+diff --git a/app/code/community/AW/Blog/Model/Comment.php b/app/code/community/AW/Blog/Model/Comment.php
+index 9b17427..bf0740c 100644
+--- a/app/code/community/AW/Blog/Model/Comment.php
++++ b/app/code/community/AW/Blog/Model/Comment.php
+@@ -26,6 +26,7 @@
+  */
+ class AW_Blog_Model_Comment extends Mage_Core_Model_Abstract{
+     public function _construct(){
++        $this->_eventPrefix = 'blog_comment';
+         $this->_init('blog/comment');
+     }
+ 	
+diff --git a/app/code/community/AW/Blog/Model/Post.php b/app/code/community/AW/Blog/Model/Post.php
+index becd713..8fc8535 100644
+--- a/app/code/community/AW/Blog/Model/Post.php
++++ b/app/code/community/AW/Blog/Model/Post.php
+@@ -29,6 +29,7 @@ class AW_Blog_Model_Post extends Mage_Core_Model_Abstract{
+     const NOROUTE_PAGE_ID = 'no-route';
+ 
+     protected function _construct(){
++        $this->_eventPrefix = 'blog_post';
+         $this->_init('blog/post');
+     }
+ 
+-- 
+1.7.4.1
+
