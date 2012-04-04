@@ -355,4 +355,11 @@ wishlist]]></disable_routes>
             </personalisation_cookie>
         </system>
     </default>
+    <phpunit>
+        <suite>
+            <modules>
+                <Phoenix_VarnishCache />
+            </modules>
+        </suite>
+    </phpunit>
 </config>
