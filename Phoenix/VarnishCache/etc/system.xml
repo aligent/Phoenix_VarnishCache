@@ -257,6 +257,16 @@
                             <show_in_store>1</show_in_store>
                             <depends><enabled>1</enabled></depends>
                         </cookie_key>
+                        <send_to_all_users  translate="label comment">
+                            <label>Ensure all users have a personalisation cookie</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>25</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><enabled>1</enabled></depends>
+                        </send_to_all_users>
                         <send_cart_count  translate="label comment">
                             <label>Send Number of Items in Cart</label>
                             <frontend_type>select</frontend_type>

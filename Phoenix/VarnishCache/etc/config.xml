@@ -307,7 +307,15 @@
                     </personalisation_cookie_update>					
                 </observers>
             </checkout_onepage_controller_success_action>
-        
+            <http_response_send_before>
+                <observers>					
+                    <personalisation_cookie_check>
+                        <type>singleton</type>						
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>checkHasPersonalisationCookie</method>
+                    </personalisation_cookie_check>
+                </observers>
+            </http_response_send_before>
         </events>
     </frontend>
     <default>
@@ -340,6 +348,7 @@ wishlist]]></disable_routes>
             <personalisation_cookie>
                 <enabled>1</enabled>
                 <cookie_key>personalisation</cookie_key>
+                <send_to_all_users>0</send_to_all_users>
                 <send_cart_count>1</send_cart_count>
                 <selector_cart_count>#cart-count</selector_cart_count>
                 <send_cart_subtotal>1</send_cart_subtotal>
