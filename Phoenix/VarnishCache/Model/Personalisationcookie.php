@@ -3,6 +3,7 @@
 class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_ENABLED                      = 'system/personalisation_cookie/enabled';
     const CONFIG_COOKIE_KEY                   = 'system/personalisation_cookie/cookie_key';
+    const CONFIG_SEND_TO_ALL_USERS            = 'system/personalisation_cookie/send_to_all_users';
     const CONFIG_SEND_CART_COUNT              = 'system/personalisation_cookie/send_cart_count';
     const CONFIG_SEND_CART_SUBTOTAL           = 'system/personalisation_cookie/send_cart_subtotal';
     const CONFIG_SEND_WISHLIST_COUNT          = 'system/personalisation_cookie/send_wishlist_count';
@@ -52,4 +53,14 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             Mage::getModel('core/cookie')->set(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),$vCookieJson,3600,'/',Mage::app()->getRequest()->getHttpHost(),false,false);
         }
     }
+    
+    public function checkHasPersonalisationCookie() {
+        if (Mage::getStoreConfig(self::CONFIG_SEND_TO_ALL_USERS)) {
+            $vCookie = Mage::getModel('core/cookie')->get(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY));
+            if ($vCookie === false) {
+                $this->updatePersonalisationCookie();
+            }
+        }
+    }
+
 }
