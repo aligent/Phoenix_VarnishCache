@@ -6,8 +6,7 @@
             if (aResults){
                 var vCookie = unescape (aResults[2]);
                 if(vCookie != ''){
-                    var aCookieData = JSON.parse(vCookie);
-                    
+                    var aCookieData = vCookie.evalJSON();                    
                     <?php if ($this->isCartCountEnabled()): ?>
                         $$('<?php echo $this->getCartCountSelector(); ?>').each(function(el) {
                             el.update(aCookieData['cart_count'].toString().split('+').join(' '));
