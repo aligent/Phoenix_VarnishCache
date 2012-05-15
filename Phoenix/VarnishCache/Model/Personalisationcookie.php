@@ -18,7 +18,8 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SELECTOR_CUSTOMER_EMAIL      = 'system/personalisation_cookie/selector_email';
     
     public function updatePersonalisationCookie(){
-        if (Mage::getStoreConfig(self::CONFIG_ENABLED)) {
+        if (Mage::getStoreConfig(self::CONFIG_ENABLED)
+                && !Mage::registry('personalisation_cookie_set')) {
             $oSession = Mage::getSingleton('customer/session');
             $bLoggedIn = $oSession->isLoggedIn();
             
@@ -50,7 +51,8 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             }
 
             $vCookieJson = Mage::helper('core')->jsonEncode($aCookieData);
-            Mage::getModel('core/cookie')->set(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),$vCookieJson,3600,'/',Mage::app()->getRequest()->getHttpHost(),false,false);
+            Mage::getModel('core/cookie')->set(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),$vCookieJson,3600,null,null,false,false);
+            Mage::register('personalisation_cookie_set',true);
         }
     }
     
