@@ -122,4 +122,26 @@ class Phoenix_Varnishcache_Block_Personalisationcookie extends Mage_Core_Block_T
         }
         return $this->getData('customer_email_selector');
     }
+    
+    public function isLoggedInToggleEnabled(){
+        if (!$this->getData('send_logged_in')) {
+            $this->setData('send_logged_in', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Personalisationcookie::CONFIG_SEND_LOGGED_IN));
+        }
+        return $this->getData('send_logged_in');
+    }
+    
+    public function getLoggedInSelector() {
+        if (!$this->getData('logged_in_selector')) {
+            $this->setData('logged_in_selector', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Personalisationcookie::CONFIG_SELECTOR_LOGGED_IN));
+        }
+        return $this->getData('logged_in_selector');
+    }
+    
+    public function getLoggedOutSelector() {
+        if (!$this->getData('logged_out_selector')) {
+            $this->setData('logged_out_selector', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Personalisationcookie::CONFIG_SELECTOR_LOGGED_OUT));
+        }
+        return $this->getData('logged_out_selector');
+    }
+    
 }

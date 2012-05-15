@@ -10,12 +10,15 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SEND_CUSTOMER_FIRST_NAME     = 'system/personalisation_cookie/send_customer_first_name';
     const CONFIG_SEND_CUSTOMER_FULL_NAME      = 'system/personalisation_cookie/send_customer_full_name';
     const CONFIG_SEND_CUSTOMER_EMAIL          = 'system/personalisation_cookie/send_customer_email';
+    const CONFIG_SEND_LOGGED_IN               = 'system/personalisation_cookie/send_logged_in';
     const CONFIG_SELECTOR_CART_COUNT          = 'system/personalisation_cookie/selector_cart_count';
     const CONFIG_SELECTOR_CART_SUBTOTAL       = 'system/personalisation_cookie/selector_cart_subtotal';
     const CONFIG_SELECTOR_WISHLIST_COUNT      = 'system/personalisation_cookie/selector_wishlist_count';
     const CONFIG_SELECTOR_CUSTOMER_FIRST_NAME = 'system/personalisation_cookie/selector_customer_first_name';
     const CONFIG_SELECTOR_CUSTOMER_FULL_NAME  = 'system/personalisation_cookie/selector_customer_full_name';
     const CONFIG_SELECTOR_CUSTOMER_EMAIL      = 'system/personalisation_cookie/selector_email';
+    const CONFIG_SELECTOR_LOGGED_IN           = 'system/personalisation_cookie/selector_logged_in';
+    const CONFIG_SELECTOR_LOGGED_OUT          = 'system/personalisation_cookie/selector_logged_out';
     
     public function updatePersonalisationCookie(){
         if (Mage::getStoreConfig(self::CONFIG_ENABLED)
@@ -48,6 +51,10 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CUSTOMER_EMAIL)) {
                 $aCookieData['customer_email'] = $bLoggedIn ? $oSession->getCustomer()->getEmail() : '';
+            }
+
+            if (Mage::getStoreConfig(self::CONFIG_SEND_LOGGED_IN)) {
+                $aCookieData['logged_in'] = $bLoggedIn ? 'true' : '';
             }
 
             $vCookieJson = Mage::helper('core')->jsonEncode($aCookieData);

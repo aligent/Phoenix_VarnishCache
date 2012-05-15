@@ -42,6 +42,12 @@
                             el.update(aCookieData['customer_email'].split('+').join(' '));
                         });
                     <?php endif; ?>
+                    <?php if ($this->isLoggedInToggleEnabled()): ?>
+                        if(aCookieData['logged_in']=='true'){
+                            $$('<?php echo $this->getLoggedOutSelector(); ?>').invoke('hide');
+                            $$('<?php echo $this->getLoggedInSelector(); ?>').invoke('show');
+                        }
+                    <?php endif; ?>
                 }
             }
         })
