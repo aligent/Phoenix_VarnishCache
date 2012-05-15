@@ -199,32 +199,38 @@ class Phoenix_VarnishCache_Helper_Cache extends Mage_Core_Helper_Abstract
      */
     public static function setTtlHeader($ttl)
     {
-        $maxAge = 's-maxage=' . (($ttl < 0) ? 0 : $ttl);
-        $cacheControlValue = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, '.$maxAge;
 
         // retrieve existing "Cache-Control" header
         $response = Mage::app()->getResponse();
         $headers = $response->getHeaders();
 
-        foreach ($headers as $key => $header) {
-            if ('Cache-Control' == $header['name'] && !empty($header['value'])) {
-                // replace existing "max-age" value
-                if (strpos($header['value'], 'age=') !== false) {
-                    $cacheControlValue = preg_replace('/(s-)?max[-]?age=[0-9]+/', $maxAge, $header['value']);
-                } else {
-                    $cacheControlValue .= $header['value'].', '.$maxAge;
+        if($ttl < 1):
+            $maxAge = 's-maxage=' . (($ttl < 0) ? 0 : $ttl);
+            $cacheControlValue = 'no-store, no-cache, must-revalidate, post-check=0, pre-check=0, '.$maxAge;
+            foreach ($headers as $key => $header) {
+                if ('Cache-Control' == $header['name'] && !empty($header['value'])) {
+                    // replace existing "max-age" value
+                    if (strpos($header['value'], 'age=') !== false) {
+                        $cacheControlValue = preg_replace('/(s-)?max[-]?age=[0-9]+/', $maxAge, $header['value']);
+                    } else {
+                        $cacheControlValue .= $header['value'].', '.$maxAge;
+                    }
                 }
             }
-        }
 
-        // set "Cache-Control" header with "s-maxage" value
-        $response->setHeader('Cache-Control', $cacheControlValue, true);
+            // set "Cache-Control" header with "s-maxage" value
+            $response->setHeader('Cache-Control', $cacheControlValue, true);
 
-        // set "Expires" header in the past to keep mod_expires from applying it's ruleset
-        $response->setHeader('Expires', 'Mon, 31 Mar 2008 10:00:00 GMT', true);
-        
-        // set "Pragma: no-cache" - just in case
-        $response->setHeader('Pragma', 'no-cache', true);
+            // set "Expires" header in the past to keep mod_expires from applying it's ruleset
+            $response->setHeader('Expires', 'Mon, 31 Mar 2008 10:00:00 GMT', true);
+
+            // set "Pragma: no-cache" - just in case
+            $response->setHeader('Pragma', 'no-cache', true);
+        else:
+            $maxAge = 's-maxage=' . $ttl;
+            // set "Cache-Control" header with "s-maxage" value
+            $response->setHeader('Cache-Control', $maxAge, true);
+        endif;
     }
 
     /**
