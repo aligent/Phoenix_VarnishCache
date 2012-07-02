@@ -254,7 +254,7 @@
                     <personalisation_cookie_update>
                         <type>singleton</type>						
                         <class>varnishcache/personalisationcookie</class>
-                        <method>updatePersonalisationCookie</method>
+                        <method>deletePersonalisationCookie</method>
                     </personalisation_cookie_update>					
                 </observers>
             </customer_logout>

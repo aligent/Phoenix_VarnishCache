@@ -63,6 +63,11 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
         }
     }
     
+    public function  deletePersonalisationCookie() {
+        Mage::getModel('core/cookie')->delete(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),null,null,false,false);
+    }
+    
+    
     public function checkHasPersonalisationCookie() {
         if (Mage::getStoreConfig(self::CONFIG_SEND_TO_ALL_USERS)) {
             $vCookie = Mage::getModel('core/cookie')->get(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY));
