@@ -26,7 +26,7 @@ class Phoenix_VarnishCache_Test_Config_Observers extends EcomDev_PHPUnit_Test_Ca
     public function testPersonalisationCookieEventObservers(){
         $this->assertModelAlias('varnishcache/personalisationcookie', 'Phoenix_VarnishCache_Model_Personalisationcookie');
         $this->assertEventObserverDefined('frontend','customer_login','varnishcache/personalisationcookie','updatePersonalisationCookie');
-        $this->assertEventObserverDefined('frontend','customer_logout','varnishcache/personalisationcookie','updatePersonalisationCookie');
+        $this->assertEventObserverDefined('frontend','customer_logout','varnishcache/personalisationcookie','deletePersonalisationCookie');
         $this->assertEventObserverDefined('frontend','wishlist_add_product','varnishcache/personalisationcookie','updatePersonalisationCookie');
         $this->assertEventObserverDefined('frontend','wishlist_update_item','varnishcache/personalisationcookie','updatePersonalisationCookie');
         $this->assertEventObserverDefined('frontend','controller_action_postdispatch_checkout_cart_index','varnishcache/personalisationcookie','updatePersonalisationCookie');
