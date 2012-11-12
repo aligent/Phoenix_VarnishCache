@@ -20,44 +20,48 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SELECTOR_LOGGED_IN           = 'system/personalisation_cookie/selector_logged_in';
     const CONFIG_SELECTOR_LOGGED_OUT          = 'system/personalisation_cookie/selector_logged_out';
     
+    protected $_aCookieData = array();
+    
+    public function setCookieValue($vKey, $vValue) {
+        $this->_aCookieData[$vKey] = $vValue;
+    }
+    
     public function updatePersonalisationCookie(){
         if (Mage::getStoreConfig(self::CONFIG_ENABLED)
                 && !Mage::registry('personalisation_cookie_set')) {
             $oSession = Mage::getSingleton('customer/session');
             $bLoggedIn = $oSession->isLoggedIn();
             
-            $aCookieData = array();
-
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_SUBTOTAL)) {
                 $vCartSubtotal = '$'.__(number_format(Mage::getSingleton('checkout/session')->getQuote()->getSubtotal(),2));
-                $aCookieData['cart_subtotal'] = $vCartSubtotal;
+                $this->setCookieValue('cart_subtotal', $vCartSubtotal);
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_COUNT)) {
-                $aCookieData['cart_count'] = Mage::helper('checkout/cart')->getSummaryCount();
+                $this->setCookieValue('cart_count', Mage::helper('checkout/cart')->getSummaryCount());
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_WISHLIST_COUNT)) {
-                $aCookieData['wishlist_count'] = Mage::helper('wishlist')->getItemCount();
+                $this->setCookieValue('wishlist_count',  Mage::helper('wishlist')->getItemCount());
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CUSTOMER_FIRST_NAME)) {
-                $aCookieData['customer_first_name'] = $bLoggedIn ? $oSession->getCustomer()->getFirstname() : '';
+                $this->setCookieValue('customer_first_name',  $bLoggedIn ? $oSession->getCustomer()->getFirstname() : '');
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CUSTOMER_FULL_NAME)) {
-                $aCookieData['customer_full_name'] = $bLoggedIn ? trim($oSession->getCustomer()->getFirstname()." ".$oSession->getCustomer()->getLastname()) : '';
+                $this->setCookieValue('customer_full_name',  $bLoggedIn ? trim($oSession->getCustomer()->getFirstname()." ".$oSession->getCustomer()->getLastname()) : '');
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CUSTOMER_EMAIL)) {
-                $aCookieData['customer_email'] = $bLoggedIn ? $oSession->getCustomer()->getEmail() : '';
+                $this->setCookieValue('customer_email',  $bLoggedIn ? $oSession->getCustomer()->getEmail() : '');
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_LOGGED_IN)) {
-                $aCookieData['logged_in'] = $bLoggedIn ? 'true' : '';
+                $this->setCookieValue('logged_in',  $bLoggedIn ? 'true' : '');
             }
 
-            $vCookieJson = Mage::helper('core')->jsonEncode($aCookieData);
+            $vCookieJson = Mage::helper('core')->jsonEncode($this->_aCookieData);
             Mage::getModel('core/cookie')->set(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),$vCookieJson,3600,null,null,false,false);
             Mage::register('personalisation_cookie_set',true);
         }
