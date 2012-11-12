@@ -60,6 +60,8 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             if (Mage::getStoreConfig(self::CONFIG_SEND_LOGGED_IN)) {
                 $this->setCookieValue('logged_in',  $bLoggedIn ? 'true' : '');
             }
+            
+            Mage::dispatchEvent('personalisation_cookie_data_prepared', array('cookie_model' => $this));
 
             $vCookieJson = Mage::helper('core')->jsonEncode($this->_aCookieData);
             Mage::getModel('core/cookie')->set(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),$vCookieJson,3600,null,null,false,false);
