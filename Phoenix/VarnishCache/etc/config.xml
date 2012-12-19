@@ -46,6 +46,26 @@
             </varnishcache>
         </blocks>
         <events>
+            <!-- clean varnish page cache together with magento -->
+            <adminhtml_cache_flush_all>
+                <observers>
+                    <varnishcache>
+                        <type>singleton</type>
+                        <class>varnishcache/observer</class>
+                        <method>cleanCache</method>
+                    </varnishcache>
+                </observers>
+            </adminhtml_cache_flush_all>
+            <adminhtml_cache_flush_system>
+                <observers>
+                    <varnishcache>
+                        <type>singleton</type>
+                        <class>varnishcache/observer</class>
+                        <method>cleanCache</method>
+                    </varnishcache>
+                </observers>
+            </adminhtml_cache_flush_system>
+
             <!-- purge product cache after stock upate -->
             <cataloginventory_stock_item_save_after>
                 <observers>
@@ -111,26 +131,6 @@
                     </varnishcache>
                 </observers>
             </controller_action_predispatch_adminhtml>
-
-            <!-- clean varnish page cache together with magento -->
-            <controller_action_postdispatch_adminhtml_cache_flushAll>
-                <observers>
-                    <varnishcache>
-                        <type>singleton</type>
-                        <class>varnishcache/observer</class>
-                        <method>cleanCache</method>
-                    </varnishcache>
-                </observers>
-            </controller_action_postdispatch_adminhtml_cache_flushAll>
-            <controller_action_postdispatch_adminhtml_cache_flushSystem>
-                <observers>
-                    <varnishcache>
-                        <type>singleton</type>
-                        <class>varnishcache/observer</class>
-                        <method>cleanCache</method>
-                    </varnishcache>
-                </observers>
-            </controller_action_postdispatch_adminhtml_cache_flushSystem>
 
             <!-- clean varnish js/css cache together with magento -->
             <clean_media_cache_after>
