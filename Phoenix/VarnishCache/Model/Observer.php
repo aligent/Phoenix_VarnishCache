@@ -72,6 +72,10 @@ class Phoenix_VarnishCache_Model_Observer
             $this->_getSession()->addSuccess(
                 Mage::helper('varnishcache')->__('The Varnish cache has been cleaned.')
             );
+            $oOutput = $observer->getOutput();
+            if ($oOutput !== null) {
+                $oOutput->writeln('<info>Varnish cache cleared</info>');
+            }
         }
         return $this;
     }
