@@ -64,9 +64,13 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             Mage::dispatchEvent('personalisation_cookie_data_prepared', array('cookie_model' => $this));
 
             $vCookieJson = Mage::helper('core')->jsonEncode($this->_aCookieData);
-            Mage::getModel('core/cookie')->set(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),$vCookieJson,3600,null,null,false,false);
+            Mage::getModel('core/cookie')->set($this->getCookieName(),$vCookieJson,3600,null,null,false,false);
             Mage::register('personalisation_cookie_set',true);
         }
+    }
+    
+    public function getCookieName() {
+        return Mage::getStoreConfig(self::CONFIG_COOKIE_KEY);;
     }
     
     public function  deletePersonalisationCookie() {
