@@ -38,7 +38,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_COUNT)) {
-                $this->setCookieValue('cart_count', Mage::helper('checkout/cart')->getSummaryCount());
+                $this->setCookieValue('cart_count', Mage::helper('checkout/cart')->getSummaryCount() !== null ? Mage::helper('checkout/cart')->getSummaryCount() : 0);
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_WISHLIST_COUNT)) {
