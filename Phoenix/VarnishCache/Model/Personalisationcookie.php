@@ -79,7 +79,9 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     
     
     public function checkHasPersonalisationCookie() {
-        if (Mage::getStoreConfig(self::CONFIG_SEND_TO_ALL_USERS)) {
+        if (Mage::registry('personalisation_cookie_force_regenerate') === true) {
+            $this->updatePersonalisationCookie();
+        }elseif (Mage::getStoreConfig(self::CONFIG_SEND_TO_ALL_USERS)) {
             $vCookie = Mage::getModel('core/cookie')->get(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY));
             if ($vCookie === false) {
                 $this->updatePersonalisationCookie();
