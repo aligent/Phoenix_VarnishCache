@@ -64,7 +64,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             Mage::dispatchEvent('personalisation_cookie_data_prepared', array('cookie_model' => $this));
 
             $vCookieJson = Mage::helper('core')->jsonEncode($this->_aCookieData);
-            Mage::getModel('core/cookie')->set($this->getCookieName(),$vCookieJson,3600,null,null,false,false);
+            Mage::getModel('core/cookie')->set($this->getCookieName(),$vCookieJson,Mage::getStoreConfig('web/cookie/cookie_lifetime'),null,null,false,false);
             Mage::register('personalisation_cookie_set',true);
         }
     }
@@ -74,7 +74,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     }
     
     public function  deletePersonalisationCookie() {
-        Mage::getModel('core/cookie')->delete(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY),null,null,false,false);
+        Mage::getModel('core/cookie')->delete($this->getCookieName(),null,null,false,false);
     }
     
     
@@ -82,7 +82,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
         if (Mage::registry('personalisation_cookie_force_regenerate') === true) {
             $this->updatePersonalisationCookie();
         }elseif (Mage::getStoreConfig(self::CONFIG_SEND_TO_ALL_USERS)) {
-            $vCookie = Mage::getModel('core/cookie')->get(Mage::getStoreConfig(self::CONFIG_COOKIE_KEY));
+            $vCookie = Mage::getModel('core/cookie')->get($this->getCookieName());
             if ($vCookie === false) {
                 $this->updatePersonalisationCookie();
             }
