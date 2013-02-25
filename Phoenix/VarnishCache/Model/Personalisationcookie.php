@@ -33,8 +33,8 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             $bLoggedIn = $oSession->isLoggedIn();
             
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_SUBTOTAL)) {
-                $vCartSubtotal = '$'.__(number_format(Mage::getSingleton('checkout/session')->getQuote()->getSubtotal(),2));
-                $this->setCookieValue('cart_subtotal', $vCartSubtotal);
+                $vCartGrandTotal = '$'.__(number_format(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(),2));
+                $this->setCookieValue('cart_subtotal', $vCartGrandTotal);
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_COUNT)) {
