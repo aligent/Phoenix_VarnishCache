@@ -46,9 +46,15 @@
                         if(aCookieData['logged_in']=='true'){
                             $$('<?php echo $this->getLoggedOutSelector(); ?>').invoke('hide');
                             $$('<?php echo $this->getLoggedInSelector(); ?>').invoke('show');
+                        } else {
+                            $$('<?php echo $this->getLoggedOutSelector(); ?>').invoke('show');
+                            $$('<?php echo $this->getLoggedInSelector(); ?>').invoke('hide');
                         }
                     <?php endif; ?>
                 }
+            } else {
+                $$('<?php echo $this->getLoggedOutSelector(); ?>').invoke('show');
+                $$('<?php echo $this->getLoggedInSelector(); ?>').invoke('hide');
             }
         })
         Event.observe(document, 'dom:loaded', function() {
