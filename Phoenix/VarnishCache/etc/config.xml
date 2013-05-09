@@ -39,6 +39,11 @@
             <varnishcache>
                 <class>Phoenix_VarnishCache_Helper</class>
             </varnishcache>
+            <core>
+                <rewrite>
+                    <url>Phoenix_VarnishCache_Helper_Core_Url</url>
+                </rewrite>
+            </core>
         </helpers>
         <blocks>
             <varnishcache>
