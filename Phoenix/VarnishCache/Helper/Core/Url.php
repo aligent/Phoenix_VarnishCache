@@ -16,7 +16,9 @@ class Phoenix_VarnishCache_Helper_Core_Url extends Mage_Core_Helper_Url {
         $bSecure = ($request->getScheme() == Mage_Core_Controller_Request_Http::SCHEME_HTTPS);
         $vBaseUrl = Mage::getBaseUrl(Mage_Core_Model_Store::URL_TYPE_LINK, $bSecure);
 
-        // Parse the base url and remove and path that might be part of the base (e.g. /shop)
+        // Parse the base url and remove any path that might be part of the base
+        // (e.g. /shop) because that will also be in the request path we appenad
+        // below.
         $iPathLength = strlen(parse_url($vBaseUrl, PHP_URL_PATH));
         if ($iPathLength > 0) {
             $vBaseUrl = substr($vBaseUrl, 0, $iPathLength * -1);

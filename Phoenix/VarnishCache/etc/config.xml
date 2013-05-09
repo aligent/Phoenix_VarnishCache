@@ -44,6 +44,11 @@
                     <url>Phoenix_VarnishCache_Helper_Core_Url</url>
                 </rewrite>
             </core>
+            <checkout>
+                <rewrite>
+                    <cart>Phoenix_VarnishCache_Helper_Checkout_Cart</cart>
+                </rewrite>
+            </checkout>
         </helpers>
         <blocks>
             <varnishcache>
