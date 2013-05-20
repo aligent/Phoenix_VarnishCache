@@ -251,7 +251,7 @@
                         <type>singleton</type>						
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </checkout_cart_save_after>
             <customer_login>
@@ -294,7 +294,12 @@
                         <type>singleton</type>						
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
                 </observers>
             </wishlist_add_product>
             <wishlist_update_item>
@@ -303,7 +308,12 @@
                         <type>singleton</type>						
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
                 </observers>
             </wishlist_update_item>
 
@@ -316,6 +326,15 @@
                     </personalisation_cookie_update>					
                 </observers>
             </controller_action_postdispatch_checkout_cart_index>
+            <controller_action_postdispatch_checkout_cart_add>
+                <observers>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
+                </observers>
+            </controller_action_postdispatch_checkout_cart_add>
             <checkout_onepage_controller_success_action>
                 <observers>					
                     <personalisation_cookie_update>

@@ -19,7 +19,9 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SELECTOR_CUSTOMER_EMAIL      = 'system/personalisation_cookie/selector_email';
     const CONFIG_SELECTOR_LOGGED_IN           = 'system/personalisation_cookie/selector_logged_in';
     const CONFIG_SELECTOR_LOGGED_OUT          = 'system/personalisation_cookie/selector_logged_out';
-    
+
+    const COOKIE_MESSAGES_KEY = 'mage_msgs';
+
     protected $_aCookieData = array();
     
     public function setCookieValue($vKey, $vValue) {
@@ -86,6 +88,40 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             if ($vCookie === false) {
                 $this->updatePersonalisationCookie();
             }
+        }
+    }
+
+    public function setMessageCookie($oObserver) {
+        if (Mage::getStoreConfigFlag(self::CONFIG_ENABLED) == false){
+            return $this;
+        }
+        $aMessageCodes = array();
+        $aSessionObjects = array(Mage::getSingleton('customer/session'), Mage::getSingleton("checkout/session"), Mage::getSingleton('catalog/session'));
+        foreach ($aSessionObjects as $oSession) {
+            $aMessages = $oSession->getMessages(true);
+            if (!empty($aMessages)) {
+                foreach ($aMessages->getItems() as $oMessage) {
+                    if($oMessage->getType() == 'success'){
+                        $aMessageCodes[] = $oMessage->getCode();
+                    }
+                    else{
+                        Mage::app()->getResponse()->setRedirect(Mage::getUrl('checkout/cart'));  //redirect to a page we know is not cached to display errors/warnings
+                        break;
+                    }
+                }
+            }
+        }
+
+        // set collected messages in messages cookie
+        if (!empty($aMessageCodes)) {
+            $vEncodedMessages = json_encode($aMessageCodes);
+            setrawcookie(self::COOKIE_MESSAGES_KEY,
+                rawurlencode($vEncodedMessages),
+                time() + Mage::getStoreConfig(Mage_Core_Model_Cookie::XML_PATH_COOKIE_LIFETIME),
+                '/',
+                Mage::getStoreConfig(Mage_Core_Model_Cookie::XML_PATH_COOKIE_DOMAIN),
+                false,
+                false);
         }
     }
 
