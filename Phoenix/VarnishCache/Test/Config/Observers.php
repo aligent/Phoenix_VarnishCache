@@ -43,14 +43,13 @@ class Phoenix_VarnishCache_Test_Config_Observers extends EcomDev_PHPUnit_Test_Ca
     public function testAdminHtmlEventObservers(){
         $this->assertModelAlias('varnishcache/observer', 'Phoenix_VarnishCache_Model_Observer');
         $this->assertEventObserverDefined('adminhtml','controller_action_predispatch_adminhtml','varnishcache/observer','disablePageCaching');
-        $this->assertEventObserverDefined('adminhtml','controller_action_postdispatch_adminhtml_cache_flushAll','varnishcache/observer','cleanCache');
-        $this->assertEventObserverDefined('adminhtml','controller_action_postdispatch_adminhtml_cache_flushSystem','varnishcache/observer','cleanCache');
         $this->assertEventObserverDefined('adminhtml','clean_media_cache_after','varnishcache/observer','cleanMediaCache');
         $this->assertEventObserverDefined('adminhtml','clean_catalog_images_cache_after','varnishcache/observer','cleanCatalogImagesCache');
         $this->assertEventObserverDefined('adminhtml','catalog_category_save_after','varnishcache/observer','purgeCatalogCategory');
         $this->assertEventObserverDefined('adminhtml','catalog_product_save_after','varnishcache/observer','purgeCatalogProduct');
         $this->assertEventObserverDefined('adminhtml','cms_page_save_after','varnishcache/observer','purgeCmsPage');
     }
+
     
     /**
      * Test global event observers are registered.
@@ -62,6 +61,8 @@ class Phoenix_VarnishCache_Test_Config_Observers extends EcomDev_PHPUnit_Test_Ca
         $this->assertEventObserverDefined('global','cataloginventory_stock_item_save_after','varnishcache/observer','purgeCatalogProductByStock');
         $this->assertEventObserverDefined('global','blog_post_save_after','varnishcache/observer','purgeBlogByPost');
         $this->assertEventObserverDefined('global','blog_comment_save_after','varnishcache/observer','purgeBlogByComment');
+        $this->assertEventObserverDefined('global','adminhtml_cache_flush_all','varnishcache/observer','cleanCache');
+        $this->assertEventObserverDefined('global','adminhtml_cache_flush_system','varnishcache/observer','cleanCache');
     }
     
 }
