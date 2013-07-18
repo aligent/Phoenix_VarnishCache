@@ -9,7 +9,7 @@
                     var aCookieData = vCookie.evalJSON();                    
                     <?php if ($this->isCartCountEnabled()): ?>
                         $$('<?php echo $this->getCartCountSelector(); ?>').each(function(el) {
-		 	                if(aCookieData['cart_count']{
+		 	                if(aCookieData['cart_count']){
                                 el.update(aCookieData['cart_count'].toString().split('+').join(' '));
                             }
 			            });
