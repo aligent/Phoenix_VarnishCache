@@ -128,6 +128,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
 
         // set collected messages in messages cookie
         if (!empty($aMessageCodes)) {
+            // TODO: Provide front end to render this cookie
             $vEncodedMessages = json_encode($aMessageCodes);
             setrawcookie(self::COOKIE_MESSAGES_KEY,
                 rawurlencode($vEncodedMessages),
