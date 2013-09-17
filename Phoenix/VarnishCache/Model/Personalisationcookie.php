@@ -19,6 +19,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SELECTOR_CUSTOMER_EMAIL      = 'system/personalisation_cookie/selector_email';
     const CONFIG_SELECTOR_LOGGED_IN           = 'system/personalisation_cookie/selector_logged_in';
     const CONFIG_SELECTOR_LOGGED_OUT          = 'system/personalisation_cookie/selector_logged_out';
+    const CONFIG_MESSAGES_COOKIE_ENABLED      = 'system/personalisation_cookie/enable_messages_cookie';
 
     const COOKIE_MESSAGES_KEY = 'mage_msgs';
 
@@ -92,7 +93,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     }
 
     public function setMessageCookie($oObserver) {
-        if (Mage::getStoreConfigFlag(self::CONFIG_ENABLED) == false){
+        if (Mage::getStoreConfigFlag(self::CONFIG_MESSAGES_COOKIE_ENABLED) == false){
             return $this;
         }
         $aMessageCodes = array();

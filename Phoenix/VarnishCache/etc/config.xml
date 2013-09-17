@@ -362,8 +362,7 @@
                 <servers>localhost</servers>
                 <port>80</port>
                 <disable_caching>0</disable_caching>
-                <disable_routes>
-<![CDATA[checkout
+                <disable_routes><![CDATA[checkout
 customer
 moneybookers
 paypal
@@ -398,6 +397,7 @@ wishlist]]></disable_routes>
                 <selector_customer_full_name>#customer-full-name</selector_customer_full_name>
                 <send_customer_email>0</send_customer_email>
                 <selector_customer_email>#customer-email</selector_customer_email>
+                <enable_messages_cookie>1</enable_messages_cookie>
             </personalisation_cookie>
         </system>
     </default>
