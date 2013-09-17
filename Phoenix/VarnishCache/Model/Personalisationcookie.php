@@ -104,8 +104,21 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
                 foreach ($aMessages->getItems() as $oMessage) {
                     if($oMessage->getType() == 'success'){
                         $aMessageCodes[] = $oMessage->getCode();
-                    }
-                    else{
+
+                    } else{
+                        // Need to add errors/notices/warnings back into session because getMessages above has removed them.
+                        switch ($oMessage->getType()) {
+                            case Mage_Core_Model_Message::ERROR:
+                                $oSession->addError($oMessage->getCode());
+                                break;
+                            case Mage_Core_Model_Message::NOTICE:
+                                $oSession->addNotice($oMessage->getCode());
+                                break;
+                            case Mage_Core_Model_Message::WARNING:
+                                $oSession->addWarning($oMessage->getCode());
+                                break;
+
+                        }
                         Mage::app()->getResponse()->setRedirect(Mage::getUrl('checkout/cart'));  //redirect to a page we know is not cached to display errors/warnings
                         break;
                     }
