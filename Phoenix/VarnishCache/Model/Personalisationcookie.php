@@ -19,6 +19,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SELECTOR_CUSTOMER_EMAIL      = 'system/personalisation_cookie/selector_email';
     const CONFIG_SELECTOR_LOGGED_IN           = 'system/personalisation_cookie/selector_logged_in';
     const CONFIG_SELECTOR_LOGGED_OUT          = 'system/personalisation_cookie/selector_logged_out';
+    const CONFIG_MESSAGES_COOKIE_ENABLED      = 'system/personalisation_cookie/enable_messages_cookie';
 
     const COOKIE_MESSAGES_KEY = 'mage_msgs';
 
@@ -92,7 +93,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     }
 
     public function setMessageCookie($oObserver) {
-        if (Mage::getStoreConfigFlag(self::CONFIG_ENABLED) == false){
+        if (Mage::getStoreConfigFlag(self::CONFIG_MESSAGES_COOKIE_ENABLED) == false){
             return $this;
         }
         $aMessageCodes = array();
@@ -103,8 +104,21 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
                 foreach ($aMessages->getItems() as $oMessage) {
                     if($oMessage->getType() == 'success'){
                         $aMessageCodes[] = $oMessage->getCode();
-                    }
-                    else{
+
+                    } else{
+                        // Need to add errors/notices/warnings back into session because getMessages above has removed them.
+                        switch ($oMessage->getType()) {
+                            case Mage_Core_Model_Message::ERROR:
+                                $oSession->addError($oMessage->getCode());
+                                break;
+                            case Mage_Core_Model_Message::NOTICE:
+                                $oSession->addNotice($oMessage->getCode());
+                                break;
+                            case Mage_Core_Model_Message::WARNING:
+                                $oSession->addWarning($oMessage->getCode());
+                                break;
+
+                        }
                         Mage::app()->getResponse()->setRedirect(Mage::getUrl('checkout/cart'));  //redirect to a page we know is not cached to display errors/warnings
                         break;
                     }
@@ -114,6 +128,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
 
         // set collected messages in messages cookie
         if (!empty($aMessageCodes)) {
+            // TODO: Provide front end to render this cookie
             $vEncodedMessages = json_encode($aMessageCodes);
             setrawcookie(self::COOKIE_MESSAGES_KEY,
                 rawurlencode($vEncodedMessages),
