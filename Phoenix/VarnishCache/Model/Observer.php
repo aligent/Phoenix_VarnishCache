@@ -332,7 +332,28 @@ class Phoenix_VarnishCache_Model_Observer
         }
         return $this;
     }
-    
+
+    /**
+     * Purge product and its categories when a review is added/approved
+     *
+     * @param Varien_Event_Observer $observer
+     * @return Phoenix_VarnishCache_Model_Observer
+     */
+    public function purgeCatalogProductByReview(Varien_Event_Observer $observer)
+    {
+        try {
+            $review = $observer->getEvent()->getObject();
+            $product = Mage::getModel('catalog/product')->load($review->getEntityPkValue());
+            if (!Mage::registry('varnishcache_catalog_product_purged_' . $product->getId())) {
+                Mage::getModel('varnishcache/control_catalog_product')->purge($product, true, true);
+                Mage::register('varnishcache_catalog_product_purged_' . $product->getId(), true);
+            }
+        } catch (Exception $e) {
+            Mage::helper('varnishcache')->debug('Error on save product purging: '.$e->getMessage());
+        }
+        return $this;
+    }
+
     /**
      * Purge Blog post for comment
      *

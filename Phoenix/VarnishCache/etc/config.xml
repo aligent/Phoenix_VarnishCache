@@ -76,7 +76,7 @@
                 </observers>
             </adminhtml_cache_flush_system>
 
-            <!-- purge product cache after stock upate -->
+            <!-- purge product cache after stock update -->
             <cataloginventory_stock_item_save_after>
                 <observers>
                     <phoenix_varnishcache>
@@ -85,6 +85,17 @@
                     </phoenix_varnishcache>
                 </observers>
             </cataloginventory_stock_item_save_after>
+
+            <!-- purge product cache after review added/modified -->
+            <review_save_after>
+                <observers>
+                    <phoenix_varnishcache>
+                        <class>varnishcache/observer</class>
+                        <method>purgeCatalogProductByReview</method>
+                    </phoenix_varnishcache>
+                </observers>
+            </review_save_after>
+
             <blog_post_save_after>
                 <observers>
                     <phoenix_varnishcache_blog_post>
