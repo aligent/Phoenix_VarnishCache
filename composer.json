@@ -1,0 +1,10 @@
+{
+  "name":"phoenix/varnishcache",
+  "type":"magento-module",
+  "license":"OSL-3.0",
+  "homepage":"https://github.com/aligent/Phoenix_VarnishCache",
+  "description":"Magento extension to control Varnish and trigger cache invalidation programatically.",
+  "require":{
+    "magento-hackathon/magento-composer-installer":"*"
+  }
+}
