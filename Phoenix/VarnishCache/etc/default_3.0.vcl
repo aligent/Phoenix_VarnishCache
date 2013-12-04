@@ -143,7 +143,11 @@ sub vcl_fetch {
     set beresp.http.X-Purge-Host = req.http.host;
     
     if (beresp.status == 200 || beresp.status == 301 || beresp.status == 404) {
-        if (beresp.http.Content-Type ~ "text/html" || beresp.http.Content-Type ~ "text/xml") {
+        if (beresp.status == 404) {
+            unset beresp.http.set-cookie;
+        }
+
+        if (beresp.http.Content-Type ~ "text/html" || beresp.http.Content-Type ~ "text/xml" || beresp.http.Content-Type ~ "application/json") {
             if ((beresp.http.Set-Cookie ~ "NO_CACHE=") || (beresp.ttl < 1s)) {
                 set beresp.ttl = 0s;
                 return (hit_for_pass);
