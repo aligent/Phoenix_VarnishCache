@@ -36,7 +36,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             $bLoggedIn = $oSession->isLoggedIn();
             
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_SUBTOTAL)) {
-                $vCartGrandTotal = '$'.__(number_format(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(),2));
+                $vCartGrandTotal = Mage::helper('core')->formatPrice(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(), false);
                 $this->setCookieValue('cart_subtotal', $vCartGrandTotal);
             }
 
