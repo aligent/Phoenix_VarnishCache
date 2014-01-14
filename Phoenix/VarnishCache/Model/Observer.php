@@ -393,8 +393,11 @@ class Phoenix_VarnishCache_Model_Observer
     public function purgeMenu($observer){
         /**  @var $oMenu VF_CustomMenu_Model_Menu */
         $oMenu = $observer->getObject();
-        $iStoreId = $oMenu->getStoreId();
-        return Mage::getModel('varnishcache/control_sitewide')->purge($iStoreId);
+        $aStoreIds = explode(',', $oMenu->getStoreId());
+        foreach ($aStoreIds as $iStoreId) {
+            Mage::getModel('varnishcache/control_sitewide')->purge($iStoreId);
+        }
+        return $this;
     }
     
 }
