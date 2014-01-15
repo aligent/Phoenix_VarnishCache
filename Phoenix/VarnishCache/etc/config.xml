@@ -364,6 +364,25 @@
                     </personalisation_cookie_check>
                 </observers>
             </http_response_send_before>
+
+            <controller_action_predispatch_checkout_cart_add>
+                <observers>
+                    <fix_formkey>
+                        <type>singleton</type>
+                        <class>varnishcache/observer</class>
+                        <method>fixFormkey</method>
+                    </fix_formkey>
+                </observers>
+            </controller_action_predispatch_checkout_cart_add>
+            <controller_action_predispatch_review_product_post>
+                <observers>
+                    <fix_formkey>
+                        <type>singleton</type>
+                        <class>varnishcache/observer</class>
+                        <method>fixFormkey</method>
+                    </fix_formkey>
+                </observers>
+            </controller_action_predispatch_review_product_post>
         </events>
     </frontend>
     <default>

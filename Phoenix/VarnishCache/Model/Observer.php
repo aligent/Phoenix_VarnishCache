@@ -399,5 +399,19 @@ class Phoenix_VarnishCache_Model_Observer
         }
         return $this;
     }
+
+
+    /**
+     * Ensure that the postdata contains the correct anti-csrf FormKey.  This
+     * defeats the CSRF protection offered by the form key (and should be used
+     * with care).  However, it's use on add to cart does allow the PDP to be
+     * cached.
+     *
+     * @param Varien_Event_Observer $observer
+     */
+    public function fixFormkey($observer) {
+        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+        $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
+    }
     
 }
