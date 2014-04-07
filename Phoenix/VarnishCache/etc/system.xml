@@ -293,16 +293,27 @@
                             <label>Send Cart Subtotal</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <default>0</default>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
                             <depends><enabled>1</enabled></depends>
                         </send_cart_subtotal>
+                        <send_cart_subtotal_ex_shipping  translate="label comment">
+                            <label>Exclude Shipping From Cart Subtotal</label>
+                            <frontend_type>select</frontend_type>
+                            <source_model>adminhtml/system_config_source_yesno</source_model>
+                            <sort_order>60</sort_order>
+                            <show_in_default>1</show_in_default>
+                            <show_in_website>1</show_in_website>
+                            <show_in_store>1</show_in_store>
+                            <depends><enabled>1</enabled></depends>
+                        </send_cart_subtotal_ex_shipping>
                         <selector_cart_subtotal translate="label comment">
                             <label>CSS Selector for Cart Subtotal</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>60</sort_order>
+                            <sort_order>70</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -315,7 +326,7 @@
                             <label>Send Number of Items in Wishlist</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>70</sort_order>
+                            <sort_order>80</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -324,7 +335,7 @@
                         <selector_wishlist_count translate="label comment">
                             <label>CSS Selector for Number of Items in Wishlist</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>80</sort_order>
+                            <sort_order>90</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -337,7 +348,7 @@
                             <label>Send Customer's First Name</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>90</sort_order>
+                            <sort_order>100</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -346,7 +357,7 @@
                         <selector_customer_first_name translate="label comment">
                             <label>CSS Selector for Customer's First Name</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>100</sort_order>
+                            <sort_order>110</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -359,7 +370,7 @@
                             <label>Send Customer's Full Name</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>110</sort_order>
+                            <sort_order>120</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -368,7 +379,7 @@
                         <selector_customer_full_name translate="label comment">
                             <label>CSS Selector for Customer's Full Name</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>120</sort_order>
+                            <sort_order>130</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -381,7 +392,7 @@
                             <label>Send Customer's Email Address</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>130</sort_order>
+                            <sort_order>140</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -390,7 +401,7 @@
                         <selector_customer_email translate="label comment">
                             <label>CSS Selector for Customer's Email Address</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>140</sort_order>
+                            <sort_order>150</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -403,7 +414,7 @@
                             <label>Send Logged In Status</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>150</sort_order>
+                            <sort_order>160</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -412,7 +423,7 @@
                         <selector_logged_in translate="label comment">
                             <label>CSS Selector for Elements to be shown if logged IN</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>160</sort_order>
+                            <sort_order>170</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -424,7 +435,7 @@
                         <selector_logged_out translate="label comment">
                             <label>CSS Selector for Elements to be shown if logged OUT</label>
                             <frontend_type>text</frontend_type><sort_order>10</sort_order>
-                            <sort_order>170</sort_order>
+                            <sort_order>180</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
@@ -437,7 +448,7 @@
                             <label>Send Success Messages in Cookie</label>
                             <frontend_type>select</frontend_type>
                             <source_model>adminhtml/system_config_source_yesno</source_model>
-                            <sort_order>180</sort_order>
+                            <sort_order>190</sort_order>
                             <show_in_default>1</show_in_default>
                             <show_in_website>1</show_in_website>
                             <show_in_store>1</show_in_store>
