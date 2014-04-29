@@ -79,7 +79,7 @@
                         </disable_caching>
                         <disable_routes translate="label comment">
                             <label>Disable caching for routes</label>
-                            <comment>Set a TTL of "0" for certain routes/actions (e.g. checkout, catalog_product_view). Use one per line.</comment>
+                            <comment>Set a TTL of "0" for certain routes/actions (e.g. checkout, catalog_product_view). Use one per line. Format: route_controller_action.  Note: Use route name, not front name.</comment>
                             <frontend_type>textarea</frontend_type>
                             <sort_order>50</sort_order>
                             <show_in_default>1</show_in_default>
