@@ -60,6 +60,13 @@ class Phoenix_Varnishcache_Block_Personalisationcookie extends Mage_Core_Block_T
         return $this->getData('send_cart_subtotal');
     }
 
+    public function isCartSubtotalExShippingEnabled() {
+        if (!$this->getData('send_cart_subtotal_ex_shipping')) {
+            $this->setData('send_cart_subtotal_ex_shipping', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Personalisationcookie::CONFIG_SEND_CART_SUBTOTAL_EX_SHIPPING));
+        }
+        return $this->getData('send_cart_subtotal_ex_shipping');
+    }
+
     public function getCartSubtotalSelector() {
         if (!$this->getData('cart_subtotal_selector')) {
             $this->setData('cart_subtotal_selector', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Personalisationcookie::CONFIG_SELECTOR_CART_SUBTOTAL));

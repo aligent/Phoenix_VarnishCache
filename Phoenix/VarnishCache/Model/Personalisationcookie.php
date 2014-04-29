@@ -6,6 +6,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     const CONFIG_SEND_TO_ALL_USERS            = 'system/personalisation_cookie/send_to_all_users';
     const CONFIG_SEND_CART_COUNT              = 'system/personalisation_cookie/send_cart_count';
     const CONFIG_SEND_CART_SUBTOTAL           = 'system/personalisation_cookie/send_cart_subtotal';
+    const CONFIG_SEND_CART_SUBTOTAL_EX_SHIPPING = 'system/personalisation_cookie/send_cart_subtotal_ex_shipping';
     const CONFIG_SEND_WISHLIST_COUNT          = 'system/personalisation_cookie/send_wishlist_count';
     const CONFIG_SEND_CUSTOMER_FIRST_NAME     = 'system/personalisation_cookie/send_customer_first_name';
     const CONFIG_SEND_CUSTOMER_FULL_NAME      = 'system/personalisation_cookie/send_customer_full_name';
@@ -34,10 +35,17 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
                 && !Mage::registry('personalisation_cookie_set')) {
             $oSession = Mage::getSingleton('customer/session');
             $bLoggedIn = $oSession->isLoggedIn();
-            
+
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_SUBTOTAL)) {
-                $vCartGrandTotal = Mage::helper('core')->formatPrice(Mage::getSingleton('checkout/session')->getQuote()->getGrandTotal(), false);
-                $this->setCookieValue('cart_subtotal', $vCartGrandTotal);
+                $oQuote = Mage::getSingleton('checkout/session')->getQuote();
+                $vCartGrandTotal = $oQuote->getGrandTotal();
+
+                if (Mage::getStoreConfig(self::CONFIG_SEND_CART_SUBTOTAL_EX_SHIPPING)) {
+                    $vCartShippingTotal = ($oQuote->getShippingAddress()->getShippingAmount() + $oQuote->getShippingAddress()->getShippingTaxAmount());
+                    $vCartGrandTotal -= $vCartShippingTotal;
+                }
+
+                $this->setCookieValue('cart_subtotal', Mage::helper('core')->formatPrice($vCartGrandTotal, false));
             }
 
             if (Mage::getStoreConfig(self::CONFIG_SEND_CART_COUNT)) {
