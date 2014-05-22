@@ -21,12 +21,14 @@
 class Phoenix_VarnishCache_Model_Observer
 {
     const SET_CACHE_HEADER_FLAG = 'VARNISH_CACHE_CONTROL_HEADERS_SET';
-
     const CONFIG_DISABLE_ON_ADD_MESSAGE     = 'system/varnishcache/disable_on_add_message';
     const CONFIG_DISABLE_ON_ADD_TO_CART     = 'system/varnishcache/disable_on_add_to_cart';
     const CONFIG_DISABLE_ON_LOGIN           = 'system/varnishcache/disable_on_login';
     const CONFIG_DISABLE_ON_ADD_TO_COMPARE  = 'system/varnishcache/disable_on_add_to_compare';
     const CONFIG_DISABLE_ON_ADD_TO_WISHLIST = 'system/varnishcache/disable_on_add_to_wishlist';
+
+    const CONFIG_ENABLED_FORM_KEY           = 'system/varnishcache/enabled_form_key';
+    const FORM_KEY_PLACEHOLDER              = 'form_key_placeholder';
     
     /**
      * Retrieve session model
@@ -410,8 +412,23 @@ class Phoenix_VarnishCache_Model_Observer
      * @param Varien_Event_Observer $observer
      */
     public function fixFormkey($observer) {
-        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
-        $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
+        if (!Mage::getStoreConfig(Phoenix_VarnishCache_Model_Observer::CONFIG_ENABLED_FORM_KEY)) {
+            $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+            $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
+        }
     }
+
+    /**
+     * Observe http_response_send_before
+     * Replace dynamically generated formkey with a place holder
+     * @param Varien_Event_Observer $observer
+     */
+
+    public function replaceFormkey($observer) {
+        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+        $vbody = $observer->getResponse()->getBody();
+        $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody ));
+    }
+
     
 }

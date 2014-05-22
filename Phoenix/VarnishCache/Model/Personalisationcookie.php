@@ -71,7 +71,13 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             if (Mage::getStoreConfig(self::CONFIG_SEND_LOGGED_IN)) {
                 $this->setCookieValue('logged_in',  $bLoggedIn ? 'true' : '');
             }
-            
+
+            if (Mage::getStoreConfig(Phoenix_VarnishCache_Model_Observer::CONFIG_ENABLED_FORM_KEY)) {
+                // put form key to personalisation cookie to replace placeholder using javascript
+                $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+                $this->setCookieValue('formkey',$sessionKey);
+            }
+
             Mage::dispatchEvent('personalisation_cookie_data_prepared', array('cookie_model' => $this));
 
             $vCookieJson = Mage::helper('core')->jsonEncode($this->_aCookieData);
@@ -79,7 +85,7 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             Mage::register('personalisation_cookie_set',true);
         }
     }
-    
+
     public function getCookieName() {
         return Mage::getStoreConfig(self::CONFIG_COOKIE_KEY);;
     }

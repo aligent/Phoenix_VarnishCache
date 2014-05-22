@@ -51,6 +51,21 @@
                             $$('<?php echo $this->getLoggedInSelector(); ?>').invoke('hide');
                         }
                     <?php endif; ?>
+
+                    <?php if ($this->isFormKeyEnabled()): //Replace formkey placeholder with value stored in personalisation cookie ?>
+                        if(aCookieData['formkey']){
+                            $$('form').each(function (f) {
+                                f.action = f.action.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>',aCookieData['formkey']);
+                            });
+                            $$('a.link-wishlist, a.link-compare').each(function (a) {
+                                a.href = a.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>',aCookieData['formkey']);
+                            });
+                            $$('input[name="form_key"]').each(function(input) {
+                                input.value = input.value.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>',aCookieData['formkey']);
+                            })
+                        }
+                    <?php endif; ?>
+
                 }
             } else {
                 $$('<?php echo $this->getLoggedOutSelector(); ?>').invoke('show');
@@ -60,5 +75,6 @@
         Event.observe(document, 'dom:loaded', function() {
             Event.fire(document, 'personalisationcookie:render');
         })
+
     </script>
 <?php endif; ?>
