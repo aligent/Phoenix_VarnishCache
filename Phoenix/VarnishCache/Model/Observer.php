@@ -28,7 +28,7 @@ class Phoenix_VarnishCache_Model_Observer
     const CONFIG_DISABLE_ON_ADD_TO_WISHLIST = 'system/varnishcache/disable_on_add_to_wishlist';
 
     const CONFIG_ENABLED_FORM_KEY           = 'system/varnishcache/enabled_form_key';
-    const FORM_KEY_PLACEHOLDER              = 'form_key_placeholder';
+    const FORM_KEY_PLACEHOLDER              = '[[_formkey_placeholder_]]';
     
     /**
      * Retrieve session model
