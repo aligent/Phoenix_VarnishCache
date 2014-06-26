@@ -74,7 +74,15 @@
         })
         Event.observe(document, 'dom:loaded', function() {
             Event.fire(document, 'personalisationcookie:render');
-        })
+
+            if (!Mage.Cookies.get('personalisation')) {
+                new Ajax.Request('/varnishcache/index/personalisationcookie', {
+                    onSuccess: function(response) {
+                        Event.fire(document, 'personalisationcookie:render');
+                    }
+                });
+            }
+        });
 
     </script>
 <?php endif; ?>

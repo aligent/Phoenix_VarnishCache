@@ -103,6 +103,7 @@ class Phoenix_VarnishCache_Helper_Cache extends Mage_Core_Helper_Abstract
 
         // check caching blacklist for request routes
         $disableRoutes = explode("\n", trim(Mage::getStoreConfig(self::XML_PATH_VARNISH_CACHE_DISABLE_ROUTES)));
+        $disableRoutes[] = 'phoenix_varnishcache';
         foreach ($disableRoutes as $route) {
             $route = trim($route);
             // if route is found at first position we have a hit

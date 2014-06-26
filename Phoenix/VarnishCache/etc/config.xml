@@ -213,6 +213,15 @@
         </events>
     </adminhtml>
     <frontend>
+        <routers>
+            <phoenix_varnishcache>
+                <use>standard</use>
+                <args>
+                    <module>Phoenix_VarnishCache</module>
+                    <frontName>varnishcache</frontName>
+                </args>
+            </phoenix_varnishcache>
+        </routers>
         <layout>
             <updates>
                 <varnishcache>
