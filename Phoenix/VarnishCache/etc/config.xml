@@ -213,6 +213,15 @@
         </events>
     </adminhtml>
     <frontend>
+        <routers>
+            <phoenix_varnishcache>
+                <use>standard</use>
+                <args>
+                    <module>Phoenix_VarnishCache</module>
+                    <frontName>varnishcache</frontName>
+                </args>
+            </phoenix_varnishcache>
+        </routers>
         <layout>
             <updates>
                 <varnishcache>
@@ -356,7 +365,12 @@
                 </observers>
             </checkout_onepage_controller_success_action>
             <http_response_send_before>
-                <observers>					
+                <observers>
+                    <varnishcache>
+                        <class>varnishcache/observer</class>
+                        <type>singleton</type>
+                        <method>replaceFormkey</method>
+                    </varnishcache>
                     <personalisation_cookie_check>
                         <type>singleton</type>						
                         <class>varnishcache/personalisationcookie</class>
@@ -389,6 +403,7 @@
         <system>
             <varnishcache>
                 <enabled>0</enabled>
+                <enabled_form_key>1</enabled_form_key>
                 <servers>localhost</servers>
                 <port>80</port>
                 <disable_caching>0</disable_caching>

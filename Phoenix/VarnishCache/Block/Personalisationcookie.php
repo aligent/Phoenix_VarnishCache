@@ -150,5 +150,12 @@ class Phoenix_Varnishcache_Block_Personalisationcookie extends Mage_Core_Block_T
         }
         return $this->getData('logged_out_selector');
     }
+
+    public function isFormKeyEnabled() {
+        if (!$this->getData('enabled_form_key')) {
+            $this->setData('enabled_form_key', Mage::getStoreConfig(Phoenix_VarnishCache_Model_Observer::CONFIG_ENABLED_FORM_KEY));
+        }
+        return $this->getData('enabled_form_key');
+    }
     
 }
