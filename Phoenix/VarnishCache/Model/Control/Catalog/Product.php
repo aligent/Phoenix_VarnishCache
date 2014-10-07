@@ -90,10 +90,41 @@ class Phoenix_VarnishCache_Model_Control_Catalog_Product
      */
     protected function _purgeById($id)
     {
+        if( Mage::getConfig()->getModuleConfig('Enterprise_Catalog')->is('active', 'true')) {
+            $this->_purgeByIdEe($id);
+        } else {
+            $this->_purgeByIdCe($id);
+        }
+        return $this;
+    }
+
+    /**
+     * Purge based on CE rewrite table
+     * @param $id
+     */
+    protected function _purgeByIdCe($id) {
         $collection = $this->_getUrlRewriteCollection()
             ->filterAllByProductId($id);
         foreach ($collection as $urlRewriteRule) {
             $urlRegexp = '/' . $urlRewriteRule->getRequestPath();
+            $this->_getCacheControl()
+                ->clean($this->_getStoreDomainList(), $urlRegexp);
+        }
+        return $this;
+    }
+
+    /**
+     * Purge based on EE rewrite tables
+     * @param $id
+     */
+    protected function _purgeByIdEe($id) {
+        $suffix = Mage::helper('catalog/product')->getProductUrlSuffix();
+        $rewrites = Mage::getResourceModel('varnishcache/enterprise_catalog_product')->getAllRewritesByProductId($id);
+        foreach ($rewrites as $row) {
+            $urlRegexp = '/' . $row['request_path'];
+            if ($suffix && $row['is_system']) {
+                $urlRegexp .= '.' . $suffix;
+            }
             $this->_getCacheControl()
                 ->clean($this->_getStoreDomainList(), $urlRegexp);
         }
