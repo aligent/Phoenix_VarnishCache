@@ -4,5 +4,9 @@
         <reference name="head">
             <block type="varnishcache/personalisationcookie" name="personalisationcookie" template="varnishcache/personalisationcookie.phtml" />
         </reference>
+
+        <reference name="formkey">
+            <action method="setTemplate"><template>varnishcache/formkey.phtml</template></action>
+        </reference>
     </default>
 </layout>
