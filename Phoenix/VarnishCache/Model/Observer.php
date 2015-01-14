@@ -423,8 +423,11 @@ class Phoenix_VarnishCache_Model_Observer
      * Replace dynamically generated formkey with a place holder
      * @param Varien_Event_Observer $observer
      */
-
     public function replaceFormkey($observer) {
+        /*
+         * This fix is redundant now because we're putting the placeholder into the formkey template directly.
+         * It is safe to leave here though to catch any form keys that may have bypassed the formkey template.
+         */
         $sessionKey = Mage::getSingleton('core/session')->getFormKey();
         $vbody = $observer->getResponse()->getBody();
         $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody ));

@@ -1,0 +1,10 @@
+<?php
+/**
+ * Replace the form key with the form key place holder
+ */
+?>
+<?php
+$formKeyEnabled = Mage::getStoreConfig(Phoenix_VarnishCache_Model_Observer::CONFIG_ENABLED_FORM_KEY);
+$formKey = $formKeyEnabled ? Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER : Mage::getSingleton('core/session')->getFormKey();
+?>
+<input name="form_key" type="hidden" value="<?php echo $formKey ?>" />

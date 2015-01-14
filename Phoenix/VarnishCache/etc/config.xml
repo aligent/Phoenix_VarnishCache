@@ -34,6 +34,12 @@
             <varnishcache_resource_mysql4>
                 <class>Phoenix_VarnishCache_Model_Resource_Mysql4</class>
             </varnishcache_resource_mysql4>
+
+            <core>
+                <rewrite>
+                    <url>Phoenix_VarnishCache_Model_Core_Url</url>
+                </rewrite>
+            </core>
         </models>
         <helpers>
             <varnishcache>
