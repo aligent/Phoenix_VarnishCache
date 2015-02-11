@@ -387,20 +387,20 @@
 
             <controller_action_predispatch_checkout_cart_add>
                 <observers>
-                    <fix_formkey>
+                    <fix_formkey_cart>
                         <type>singleton</type>
                         <class>varnishcache/observer</class>
-                        <method>fixFormkey</method>
-                    </fix_formkey>
+                        <method>bypassFormKeyCart</method>
+                    </fix_formkey_cart>
                 </observers>
             </controller_action_predispatch_checkout_cart_add>
             <controller_action_predispatch_review_product_post>
                 <observers>
-                    <fix_formkey>
+                    <fix_formkey_review>
                         <type>singleton</type>
                         <class>varnishcache/observer</class>
-                        <method>fixFormkey</method>
-                    </fix_formkey>
+                        <method>bypassFormReview</method>
+                    </fix_formkey_review>
                 </observers>
             </controller_action_predispatch_review_product_post>
         </events>

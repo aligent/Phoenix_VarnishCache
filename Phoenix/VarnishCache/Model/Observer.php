@@ -28,6 +28,8 @@ class Phoenix_VarnishCache_Model_Observer
     const CONFIG_DISABLE_ON_ADD_TO_WISHLIST = 'system/varnishcache/disable_on_add_to_wishlist';
 
     const CONFIG_ENABLED_FORM_KEY           = 'system/varnishcache/enabled_form_key';
+    const CONFIG_BYPASS_FORM_KEY_CHECK_CART = 'system/varnishcache/bypass_form_key_cart';
+    const CONFIG_BYPASS_FORM_KEY_CHECK_REVIEW = 'system/varnishcache/bypass_form_key_review';
     const FORM_KEY_PLACEHOLDER              = '_form_key_placeholder_';
     
     /**
@@ -411,11 +413,21 @@ class Phoenix_VarnishCache_Model_Observer
      *
      * @param Varien_Event_Observer $observer
      */
-    public function fixFormkey($observer) {
-        if (!Mage::getStoreConfig(Phoenix_VarnishCache_Model_Observer::CONFIG_ENABLED_FORM_KEY)) {
-            $sessionKey = Mage::getSingleton('core/session')->getFormKey();
-            $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
+    public function bypassFormKeyCart($observer) {
+        if (Mage::getStoreConfig(self::CONFIG_BYPASS_FORM_KEY_CHECK_CART)) {
+            $this->setFormKeyParam($observer);
         }
+    }
+
+    public function bypassFormReview($observer) {
+        if (Mage::getStoreConfig(self::CONFIG_BYPASS_FORM_KEY_CHECK_REVIEW)) {
+            $this->setFormKeyParam($observer);
+        }
+    }
+
+    protected function setFormKeyParam(&$observer) {
+        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+        $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
     }
 
     /**
