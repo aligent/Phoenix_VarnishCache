@@ -440,9 +440,12 @@ class Phoenix_VarnishCache_Model_Observer
          * This fix is redundant now because we're putting the placeholder into the formkey template directly.
          * It is safe to leave here though to catch any form keys that may have bypassed the formkey template.
          */
-        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
-        $vbody = $observer->getResponse()->getBody();
-        $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody ));
+        // Don't replace the form key for AJAX requests. These should never be cached
+        if (!Mage::app()->getRequest()->isXmlHttpRequest()) {
+            $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+            $vbody = $observer->getResponse()->getBody();
+            $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody));
+        }
     }
 
     

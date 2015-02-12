@@ -17,7 +17,7 @@ class Phoenix_VarnishCache_Model_Core_Url extends Mage_Core_Model_Url {
      * @return  string
      */
     public function getUrl($routePath = null, $routeParams = null) {
-        if (isset($routeParams['form_key'])) {
+        if (isset($routeParams['form_key']) && !Mage::app()->getRequest()->isXmlHttpRequest()) {
             $routeParams['form_key'] = Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER;
         }
         return parent::getUrl($routePath, $routeParams);
