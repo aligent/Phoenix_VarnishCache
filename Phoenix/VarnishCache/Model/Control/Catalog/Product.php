@@ -35,7 +35,7 @@ class Phoenix_VarnishCache_Model_Control_Catalog_Product
     {
         if ($this->_canPurge()) {
             $this->_purgeById($product->getId());
-            $this->_getSession()->addSuccess(
+            Mage::helper('varnishcache')->addSuccess(
             	Mage::helper('varnishcache')->__('Varnish cache for "%s" has been purged.', $product->getName())
             );
             if ($purgeParentProducts) {
@@ -60,7 +60,7 @@ class Phoenix_VarnishCache_Model_Control_Catalog_Product
                 foreach ($product->getCategoryCollection() as $category) {
                     $catalogCacheControl->purge($category);
                 }
-                $this->_getSession()->addSuccess(
+                Mage::helper('varnishcache')->addSuccess(
                 	Mage::helper('varnishcache')->__('Varnish cache for the product\'s categories has been purged.')
                 );
             }

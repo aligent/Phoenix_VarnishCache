@@ -69,9 +69,7 @@ class Phoenix_VarnishCache_Model_Observer
         if ($this->_isCacheEnabled()) {
             $this->_getCacheControl()->clean(Mage::helper('varnishcache/cache')->getStoreDomainList());
 
-            $this->_getSession()->addSuccess(
-                Mage::helper('varnishcache')->__('The Varnish cache has been cleaned.')
-            );
+            Mage::helper('varnishcache')->addSuccess('The Varnish cache has been cleaned.');
             $oOutput = $observer->getOutput();
             if ($oOutput !== null) {
                 $oOutput->writeln('<info>Varnish cache cleared</info>');
@@ -101,9 +99,7 @@ class Phoenix_VarnishCache_Model_Observer
             	Phoenix_VarnishCache_Model_Control::CONTENT_TYPE_HTML
             );
 
-            $this->_getSession()->addSuccess(
-                Mage::helper('varnishcache')->__('The JavaScript/CSS cache has been cleaned on the Varnish servers.')
-            );
+            Mage::helper('varnishcache')->addSuccess('The JavaScript/CSS cache has been cleaned on the Varnish servers.');
         }
         return $this;
     }
@@ -130,9 +126,7 @@ class Phoenix_VarnishCache_Model_Observer
             	Phoenix_VarnishCache_Model_Control::CONTENT_TYPE_HTML
             );
 
-            $this->_getSession()->addSuccess(
-                Mage::helper('varnishcache')->__('The catalog image cache has been cleaned on the Varnish servers.')
-            );
+            Mage::helper('varnishcache')->addSuccess('The catalog image cache has been cleaned on the Varnish servers.');
         }
         return $this;
     }

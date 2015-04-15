@@ -66,7 +66,7 @@ class Phoenix_VarnishCache_Model_Control_Blog
                 $this->_getCacheControl()->clean($vHost, '^' . $vPath . '/{0,1}$');
             }
 
-            $this->_getSession()->addSuccess(
+            Mage::helper('varnishcache')->addSuccess(
             	Mage::helper('varnishcache')->__('Varnish cache for "%s" has been purged.', $oPost->getTitle())
             );
 
