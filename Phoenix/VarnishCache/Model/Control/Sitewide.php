@@ -36,16 +36,7 @@ class Phoenix_VarnishCache_Model_Control_Sitewide
             $oControl = $oHelper->getCacheControl();
             $oControl->clean($vDomains);
 
-            // Setup scripts may cause a cache purge, and we won't necessarily
-            // have a valid admin session while setup scripts are running.  All
-            // setup scripts are executed before the requests is dispatched, so
-            // if the request hasn't been dispatched yet, then we can assume
-            // setup scripts are running.
-            if (Mage::app()->getRequest()->isDispatched()) {
-                $this->_getSession()->addSuccess(
-                    Mage::helper('varnishcache')->__('Varnish cache has been purged.')
-                );
-            }
+            Mage::helper('varnishcache')->addSuccess('Varnish cache has been purged.');
         }
         return $this;
     }
