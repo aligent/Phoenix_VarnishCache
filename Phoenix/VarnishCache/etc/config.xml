@@ -238,7 +238,7 @@
                     </varnishcache>
                 </observers>
             </http_response_send_before>
-            
+
             <!-- stop page caching at visitor interaction -->
             <core_session_abstract_add_message>
                 <observers>
@@ -259,7 +259,7 @@
             <checkout_cart_save_after>
                 <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>
@@ -272,19 +272,19 @@
                         <method>checkDisableCachingOnLogin</method>
                     </varnishcache>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </customer_login>
             <customer_logout>
                 <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>deletePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </customer_logout>
             <catalog_product_compare_add_product>
@@ -302,7 +302,7 @@
                         <method>checkDisableCachingOnAddToWishlist</method>
                     </varnishcache>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>
@@ -316,7 +316,7 @@
             <wishlist_update_item>
                 <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>
@@ -327,14 +327,43 @@
                     </set_message_cookie>
                 </observers>
             </wishlist_update_item>
-
-            <controller_action_postdispatch_checkout_cart_index>
-                <observers>					
+            <controller_action_postdispatch_wishlist_index_update>
+                <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
+                </observers>
+            </controller_action_postdispatch_wishlist_index_update>
+
+            <controller_action_postdispatch_wishlist_index_remove>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
+                </observers>
+            </controller_action_postdispatch_wishlist_index_remove>
+
+            <controller_action_postdispatch_checkout_cart_index>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>
                 </observers>
             </controller_action_postdispatch_checkout_cart_index>
             <controller_action_postdispatch_checkout_cart_add>
@@ -347,18 +376,18 @@
                 </observers>
             </controller_action_postdispatch_checkout_cart_add>
             <checkout_onepage_controller_success_action>
-                <observers>					
+                <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </checkout_onepage_controller_success_action>
             <http_response_send_before>
-                <observers>					
+                <observers>
                     <personalisation_cookie_check>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>checkHasPersonalisationCookie</method>
                     </personalisation_cookie_check>
