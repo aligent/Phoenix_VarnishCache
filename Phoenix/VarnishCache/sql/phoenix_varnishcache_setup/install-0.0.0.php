@@ -1,5 +1,4 @@
 <?php
-$oSetup = $this;
-$oSetup->startSetup();
-
-$oSetup->endSetup();
+$installer = $this;
+$installer->startSetup();
+$installer->endSetup();
