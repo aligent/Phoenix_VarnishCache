@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Phoenix_VarnishCache>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </Phoenix_VarnishCache>
     </modules>
     <global>
@@ -55,6 +55,13 @@
                 <class>Phoenix_VarnishCache_Block</class>
             </varnishcache>
         </blocks>
+        <resources>
+            <phoenix_varnishcache_setup>
+                <setup>
+                    <module>Phoenix_VarnishCache</module>
+                </setup>
+            </phoenix_varnishcache_setup>
+        </resources>
         <events>
             <!-- clean varnish page cache together with magento -->
             <adminhtml_cache_flush_all>
