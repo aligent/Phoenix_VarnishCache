@@ -118,14 +118,6 @@
                     </phoenix_varnishcache_blog_comment>
                 </observers>
             </blog_comment_save_after>
-            <custommenu_save_after>
-                <observers>
-                    <phoenix_varnishcache_custommenu>
-                        <class>varnishcache/observer</class>
-                        <method>purgeMenu</method>
-                    </phoenix_varnishcache_custommenu>
-                </observers>
-            </custommenu_save_after>
         </events>
     </global>
     <admin>
@@ -216,6 +208,16 @@
                     </phoenix_varnishcache>
                 </observers>
             </cms_page_save_after>
+
+            <custommenu_save_after>
+                <observers>
+                    <phoenix_varnishcache_custommenu>
+                        <class>varnishcache/observer</class>
+                        <method>purgeMenu</method>
+                    </phoenix_varnishcache_custommenu>
+                </observers>
+            </custommenu_save_after>
+
         </events>
     </adminhtml>
     <frontend>
