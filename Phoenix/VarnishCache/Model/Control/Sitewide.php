@@ -36,10 +36,7 @@ class Phoenix_VarnishCache_Model_Control_Sitewide
             $oControl = $oHelper->getCacheControl();
             $oControl->clean($vDomains);
 
-            $this->_getSession()->addSuccess(
-            	Mage::helper('varnishcache')->__('Varnish cache has been purged.')
-            );
-
+            Mage::helper('varnishcache')->addSuccess('Varnish cache has been purged.');
         }
         return $this;
     }

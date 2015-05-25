@@ -84,4 +84,26 @@ class Phoenix_VarnishCache_Helper_Data extends Mage_Core_Helper_Abstract
     {
         return Mage::getSingleton('varnishcache/control');
     }
+
+
+    /**
+     * Will localise and add a message to session in a way that's compatible
+     * with unit test and over "non admin" environments.
+     *
+     * Setup scripts may cause a cache purge, and we won't necessarily
+     * have a valid admin session while setup scripts are running.  All
+     * setup scripts are executed before the requests is dispatched, so
+     * if the request hasn't been dispatched yet, then we can assume
+     * setup scripts are running.
+     *
+     * @param $message
+     */
+    public function addSuccess($message) {
+        if (Mage::app()->getRequest()->isDispatched()) {
+            Mage::getSingleton('adminhtml/session')->addSuccess(
+                Mage::helper('varnishcache')->__($message)
+            );
+        }
+    }
+
 }
