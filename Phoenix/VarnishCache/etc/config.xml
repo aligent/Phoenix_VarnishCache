@@ -260,6 +260,16 @@
                         <class>varnishcache/observer</class>
                         <method>sanitizeCacheControlHeader</method>
                     </varnishcache>
+                    <formkey>
+                        <class>varnishcache/observer</class>
+                        <type>singleton</type>
+                        <method>replaceFormkey</method>
+                    </formkey>
+                    <personalisation_cookie_check>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>checkHasPersonalisationCookie</method>
+                    </personalisation_cookie_check>
                 </observers>
             </http_response_send_before>
 
@@ -408,20 +418,6 @@
                     </personalisation_cookie_update>
                 </observers>
             </checkout_onepage_controller_success_action>
-            <http_response_send_before>
-                <observers>
-                    <varnishcache>
-                        <class>varnishcache/observer</class>
-                        <type>singleton</type>
-                        <method>replaceFormkey</method>
-                    </varnishcache>
-                    <personalisation_cookie_check>
-                        <type>singleton</type>
-                        <class>varnishcache/personalisationcookie</class>
-                        <method>checkHasPersonalisationCookie</method>
-                    </personalisation_cookie_check>
-                </observers>
-            </http_response_send_before>
 
             <controller_action_predispatch_checkout_cart_add>
                 <observers>
