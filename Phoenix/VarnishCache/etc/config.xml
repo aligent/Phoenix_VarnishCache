@@ -285,6 +285,15 @@
                     </personalisation_cookie_update>
                 </observers>
             </customer_login>
+            <customer_save_after>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>
+                </observers>
+            </customer_save_after>
             <customer_logout>
                 <observers>
                     <personalisation_cookie_update>
