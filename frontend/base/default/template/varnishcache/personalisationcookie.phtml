@@ -22,6 +22,12 @@
                         $$('input[name="form_key"]').each(function (input) {
                             input.value = input.value.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                         });
+                        $$('button.btn-cart').each(function(button) {
+                            if(button.hasAttribute('onclick')){
+                                var fn = button.readAttribute('onclick').replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                                button.setAttribute('onclick',fn);
+                            }
+                        });
                     }
                 }
             }
