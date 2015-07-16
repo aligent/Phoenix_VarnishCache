@@ -270,6 +270,11 @@
                         <class>varnishcache/personalisationcookie</class>
                         <method>checkHasPersonalisationCookie</method>
                     </personalisation_cookie_check>
+                    <personalisation_cookie_set>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setPersonalisationCookie</method>
+                    </personalisation_cookie_set>
                 </observers>
             </http_response_send_before>
 

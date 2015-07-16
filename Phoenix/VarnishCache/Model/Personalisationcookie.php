@@ -29,10 +29,24 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     public function setCookieValue($vKey, $vValue) {
         $this->_aCookieData[$vKey] = $vValue;
     }
-    
-    public function updatePersonalisationCookie(){
+
+
+    /**
+     * Register that the personalisation cookie needs to be updated.
+     * The cookie will be regenerated just before the response is returned. This ensure all controllers have completed
+     * before gathering the cookie data
+     */
+    public function updatePersonalisationCookie()
+    {
+        Mage::register('personalisation_cookie_update',true, true);
+    }
+
+    /**
+     * Set's the personalisation cookie if it has been flagged for update from updatePersonalisationCookie()
+     */
+    public function setPersonalisationCookie() {
         if (Mage::getStoreConfig(self::CONFIG_ENABLED)
-                && !Mage::registry('personalisation_cookie_set')) {
+                && Mage::registry('personalisation_cookie_update')) {
             $oSession = Mage::getSingleton('customer/session');
             $bLoggedIn = $oSession->isLoggedIn();
 
@@ -82,12 +96,11 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
 
             $vCookieJson = Mage::helper('core')->jsonEncode($this->_aCookieData);
             Mage::getModel('core/cookie')->set($this->getCookieName(),$vCookieJson,Mage::getStoreConfig('web/cookie/cookie_lifetime'),null,null,false,false);
-            Mage::register('personalisation_cookie_set',true);
         }
     }
 
     public function getCookieName() {
-        return Mage::getStoreConfig(self::CONFIG_COOKIE_KEY);;
+        return Mage::getStoreConfig(self::CONFIG_COOKIE_KEY);
     }
     
     public function  deletePersonalisationCookie() {
