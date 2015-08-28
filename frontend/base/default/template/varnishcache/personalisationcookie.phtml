@@ -16,7 +16,7 @@
                         $$('form').each(function (f) {
                             f.action = f.action.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                         });
-                        $$('a.link-wishlist, a.link-compare, a.add-to-cart').each(function (a) {
+                        $$('a.link-wishlist, a.add-wishlist, a.link-compare, a.add-to-cart').each(function (a) {
                             a.href = a.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                         });
                         $$('input[name="form_key"]').each(function (input) {
