@@ -22,7 +22,7 @@
 <config>
     <modules>
         <Phoenix_VarnishCache>
-            <version>3.0.0</version>
+            <version>3.0.1</version>
         </Phoenix_VarnishCache>
     </modules>
     <global>
@@ -34,6 +34,12 @@
             <varnishcache_resource_mysql4>
                 <class>Phoenix_VarnishCache_Model_Resource_Mysql4</class>
             </varnishcache_resource_mysql4>
+
+            <core>
+                <rewrite>
+                    <url>Phoenix_VarnishCache_Model_Core_Url</url>
+                </rewrite>
+            </core>
         </models>
         <helpers>
             <varnishcache>
@@ -55,6 +61,13 @@
                 <class>Phoenix_VarnishCache_Block</class>
             </varnishcache>
         </blocks>
+        <resources>
+            <phoenix_varnishcache_setup>
+                <setup>
+                    <module>Phoenix_VarnishCache</module>
+                </setup>
+            </phoenix_varnishcache_setup>
+        </resources>
         <events>
             <!-- clean varnish page cache together with magento -->
             <adminhtml_cache_flush_all>
@@ -112,14 +125,6 @@
                     </phoenix_varnishcache_blog_comment>
                 </observers>
             </blog_comment_save_after>
-            <custommenu_save_after>
-                <observers>
-                    <phoenix_varnishcache_custommenu>
-                        <class>varnishcache/observer</class>
-                        <method>purgeMenu</method>
-                    </phoenix_varnishcache_custommenu>
-                </observers>
-            </custommenu_save_after>
         </events>
     </global>
     <admin>
@@ -210,6 +215,16 @@
                     </phoenix_varnishcache>
                 </observers>
             </cms_page_save_after>
+
+            <custommenu_save_after>
+                <observers>
+                    <phoenix_varnishcache_custommenu>
+                        <class>varnishcache/observer</class>
+                        <method>purgeMenu</method>
+                    </phoenix_varnishcache_custommenu>
+                </observers>
+            </custommenu_save_after>
+
         </events>
     </adminhtml>
     <frontend>
@@ -245,9 +260,24 @@
                         <class>varnishcache/observer</class>
                         <method>sanitizeCacheControlHeader</method>
                     </varnishcache>
+                    <formkey>
+                        <class>varnishcache/observer</class>
+                        <type>singleton</type>
+                        <method>replaceFormkey</method>
+                    </formkey>
+                    <personalisation_cookie_check>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>checkHasPersonalisationCookie</method>
+                    </personalisation_cookie_check>
+                    <personalisation_cookie_set>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setPersonalisationCookie</method>
+                    </personalisation_cookie_set>
                 </observers>
             </http_response_send_before>
-            
+
             <!-- stop page caching at visitor interaction -->
             <core_session_abstract_add_message>
                 <observers>
@@ -268,7 +298,7 @@
             <checkout_cart_save_after>
                 <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>
@@ -281,19 +311,28 @@
                         <method>checkDisableCachingOnLogin</method>
                     </varnishcache>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </customer_login>
+            <customer_save_after>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>
+                </observers>
+            </customer_save_after>
             <customer_logout>
                 <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>deletePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </customer_logout>
             <catalog_product_compare_add_product>
@@ -311,7 +350,7 @@
                         <method>checkDisableCachingOnAddToWishlist</method>
                     </varnishcache>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>
@@ -325,7 +364,7 @@
             <wishlist_update_item>
                 <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
                     </personalisation_cookie_update>
@@ -336,14 +375,43 @@
                     </set_message_cookie>
                 </observers>
             </wishlist_update_item>
-
-            <controller_action_postdispatch_checkout_cart_index>
-                <observers>					
+            <controller_action_postdispatch_wishlist_index_update>
+                <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
+                </observers>
+            </controller_action_postdispatch_wishlist_index_update>
+
+            <controller_action_postdispatch_wishlist_index_remove>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>
+                    <set_message_cookie>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>setMessageCookie</method>
+                    </set_message_cookie>
+                </observers>
+            </controller_action_postdispatch_wishlist_index_remove>
+
+            <controller_action_postdispatch_checkout_cart_index>
+                <observers>
+                    <personalisation_cookie_update>
+                        <type>singleton</type>
+                        <class>varnishcache/personalisationcookie</class>
+                        <method>updatePersonalisationCookie</method>
+                    </personalisation_cookie_update>
                 </observers>
             </controller_action_postdispatch_checkout_cart_index>
             <controller_action_postdispatch_checkout_cart_add>
@@ -356,45 +424,31 @@
                 </observers>
             </controller_action_postdispatch_checkout_cart_add>
             <checkout_onepage_controller_success_action>
-                <observers>					
+                <observers>
                     <personalisation_cookie_update>
-                        <type>singleton</type>						
+                        <type>singleton</type>
                         <class>varnishcache/personalisationcookie</class>
                         <method>updatePersonalisationCookie</method>
-                    </personalisation_cookie_update>					
+                    </personalisation_cookie_update>
                 </observers>
             </checkout_onepage_controller_success_action>
-            <http_response_send_before>
-                <observers>
-                    <varnishcache>
-                        <class>varnishcache/observer</class>
-                        <type>singleton</type>
-                        <method>replaceFormkey</method>
-                    </varnishcache>
-                    <personalisation_cookie_check>
-                        <type>singleton</type>						
-                        <class>varnishcache/personalisationcookie</class>
-                        <method>checkHasPersonalisationCookie</method>
-                    </personalisation_cookie_check>
-                </observers>
-            </http_response_send_before>
 
             <controller_action_predispatch_checkout_cart_add>
                 <observers>
-                    <fix_formkey>
+                    <fix_formkey_cart>
                         <type>singleton</type>
                         <class>varnishcache/observer</class>
-                        <method>fixFormkey</method>
-                    </fix_formkey>
+                        <method>bypassFormKeyCart</method>
+                    </fix_formkey_cart>
                 </observers>
             </controller_action_predispatch_checkout_cart_add>
             <controller_action_predispatch_review_product_post>
                 <observers>
-                    <fix_formkey>
+                    <fix_formkey_review>
                         <type>singleton</type>
                         <class>varnishcache/observer</class>
-                        <method>fixFormkey</method>
-                    </fix_formkey>
+                        <method>bypassFormReview</method>
+                    </fix_formkey_review>
                 </observers>
             </controller_action_predispatch_review_product_post>
         </events>

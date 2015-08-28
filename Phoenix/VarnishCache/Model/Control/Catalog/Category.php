@@ -34,7 +34,7 @@ class Phoenix_VarnishCache_Model_Control_Catalog_Category
         if ($this->_canPurge()) {
             $this->_purgeById($category->getId());
             if ($categoryName = $category->getName()) {
-                $this->_getSession()->addSuccess(
+                Mage::helper('varnishcache')->addSuccess(
                 	Mage::helper('varnishcache')->__('Varnish cache for "%s" has been purged.', $categoryName)
                 );
             }
@@ -64,10 +64,32 @@ class Phoenix_VarnishCache_Model_Control_Catalog_Category
      */
     protected function _purgeById($id)
     {
+        if( Mage::getConfig()->getModuleConfig('Enterprise_Catalog')->is('active', 'true')) {
+            $this->_purgeByIdEe($id);
+        } else {
+            $this->_purgeByIdCe($id);
+        }
+        return $this;
+    }
+
+    protected function _purgeByIdCe($id) {
         $collection = $this->_getUrlRewriteCollection()
             ->filterAllByCategoryId($id);
         foreach ($collection as $urlRewriteRule) {
             $urlRegexp = '/' . $urlRewriteRule->getRequestPath();
+            $this->_getCacheControl()
+                ->clean($this->_getStoreDomainList(), $urlRegexp);
+        }
+        return $this;
+    }
+    protected function _purgeByIdEe($id) {
+        $suffix = Mage::helper('catalog/product')->getProductUrlSuffix();
+        $rewrites = Mage::getResourceModel('varnishcache/enterprise_catalog_category')->getAllRewritesByCategoryId($id);
+        foreach ($rewrites as $row) {
+            $urlRegexp = '/' . $row['request_path'];
+            if ($suffix && $row['is_system']) {
+                $urlRegexp .= '.' . $suffix;
+            }
             $this->_getCacheControl()
                 ->clean($this->_getStoreDomainList(), $urlRegexp);
         }

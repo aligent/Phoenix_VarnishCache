@@ -28,6 +28,8 @@ class Phoenix_VarnishCache_Model_Observer
     const CONFIG_DISABLE_ON_ADD_TO_WISHLIST = 'system/varnishcache/disable_on_add_to_wishlist';
 
     const CONFIG_ENABLED_FORM_KEY           = 'system/varnishcache/enabled_form_key';
+    const CONFIG_BYPASS_FORM_KEY_CHECK_CART = 'system/varnishcache/bypass_form_key_cart';
+    const CONFIG_BYPASS_FORM_KEY_CHECK_REVIEW = 'system/varnishcache/bypass_form_key_review';
     const FORM_KEY_PLACEHOLDER              = '_form_key_placeholder_';
     
     /**
@@ -71,9 +73,7 @@ class Phoenix_VarnishCache_Model_Observer
         if ($this->_isCacheEnabled()) {
             $this->_getCacheControl()->clean(Mage::helper('varnishcache/cache')->getStoreDomainList());
 
-            $this->_getSession()->addSuccess(
-                Mage::helper('varnishcache')->__('The Varnish cache has been cleaned.')
-            );
+            Mage::helper('varnishcache')->addSuccess('The Varnish cache has been cleaned.');
             $oOutput = $observer->getOutput();
             if ($oOutput !== null) {
                 $oOutput->writeln('<info>Varnish cache cleared</info>');
@@ -103,9 +103,7 @@ class Phoenix_VarnishCache_Model_Observer
             	Phoenix_VarnishCache_Model_Control::CONTENT_TYPE_HTML
             );
 
-            $this->_getSession()->addSuccess(
-                Mage::helper('varnishcache')->__('The JavaScript/CSS cache has been cleaned on the Varnish servers.')
-            );
+            Mage::helper('varnishcache')->addSuccess('The JavaScript/CSS cache has been cleaned on the Varnish servers.');
         }
         return $this;
     }
@@ -132,9 +130,7 @@ class Phoenix_VarnishCache_Model_Observer
             	Phoenix_VarnishCache_Model_Control::CONTENT_TYPE_HTML
             );
 
-            $this->_getSession()->addSuccess(
-                Mage::helper('varnishcache')->__('The catalog image cache has been cleaned on the Varnish servers.')
-            );
+            Mage::helper('varnishcache')->addSuccess('The catalog image cache has been cleaned on the Varnish servers.');
         }
         return $this;
     }
@@ -411,11 +407,21 @@ class Phoenix_VarnishCache_Model_Observer
      *
      * @param Varien_Event_Observer $observer
      */
-    public function fixFormkey($observer) {
-        if (!Mage::getStoreConfig(Phoenix_VarnishCache_Model_Observer::CONFIG_ENABLED_FORM_KEY)) {
-            $sessionKey = Mage::getSingleton('core/session')->getFormKey();
-            $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
+    public function bypassFormKeyCart($observer) {
+        if (Mage::getStoreConfig(self::CONFIG_BYPASS_FORM_KEY_CHECK_CART)) {
+            $this->setFormKeyParam($observer);
         }
+    }
+
+    public function bypassFormReview($observer) {
+        if (Mage::getStoreConfig(self::CONFIG_BYPASS_FORM_KEY_CHECK_REVIEW)) {
+            $this->setFormKeyParam($observer);
+        }
+    }
+
+    protected function setFormKeyParam(&$observer) {
+        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+        $observer->getControllerAction()->getRequest()->setParam('form_key', $sessionKey);
     }
 
     /**
@@ -423,11 +429,17 @@ class Phoenix_VarnishCache_Model_Observer
      * Replace dynamically generated formkey with a place holder
      * @param Varien_Event_Observer $observer
      */
-
     public function replaceFormkey($observer) {
-        $sessionKey = Mage::getSingleton('core/session')->getFormKey();
-        $vbody = $observer->getResponse()->getBody();
-        $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody ));
+        /*
+         * This fix is redundant now because we're putting the placeholder into the formkey template directly.
+         * It is safe to leave here though to catch any form keys that may have bypassed the formkey template.
+         */
+        // Don't replace the form key for AJAX requests. These should never be cached
+        if (!Mage::app()->getRequest()->isXmlHttpRequest()) {
+            $sessionKey = Mage::getSingleton('core/session')->getFormKey();
+            $vbody = $observer->getResponse()->getBody();
+            $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody));
+        }
     }
 
     

@@ -1,42 +1,76 @@
 <?php if ($this->isEnabled()): ?>
     <script>
+        if (typeof VarnishCache == 'undefined') {
+            var VarnishCache = {};
+        }
+        VarnishCache.UpdateFormkeyPlaceholders = function() {
+            <?php if ($this->isFormKeyEnabled()):  // Replace formkey placeholder with value stored in personalisation cookie ?>
+            var vCookieName = '<?php echo $this->getCookieKey(); ?>';
+            var aResults = document.cookie.match ( '(^|;) ?' + vCookieName + '=([^;]*)(;|$)' );
+            if (aResults) {
+                var vCookie = unescape(aResults[2]);
+                if (vCookie != '') {
+                    var aCookieData = vCookie.evalJSON();
+
+                    if (aCookieData['formkey']) {
+                        $$('form').each(function (f) {
+                            f.action = f.action.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                        });
+                        $$('a.link-wishlist, a.add-wishlist, a.link-compare, a.add-to-cart').each(function (a) {
+                            a.href = a.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                        });
+                        $$('input[name="form_key"]').each(function (input) {
+                            input.value = input.value.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                        });
+                        $$('button.btn-cart').each(function(button) {
+                            if(button.hasAttribute('onclick')){
+                                var fn = button.readAttribute('onclick').replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                                button.setAttribute('onclick',fn);
+                            }
+                        });
+                    }
+                }
+            }
+            <?php endif; ?>
+        };
+
         Event.observe(document, 'personalisationcookie:render', function() {
             var vCookieName = '<?php echo $this->getCookieKey(); ?>';
             var aResults = document.cookie.match ( '(^|;) ?' + vCookieName + '=([^;]*)(;|$)' );
             if (aResults){
                 var vCookie = unescape (aResults[2]);
                 if(vCookie != ''){
-                    var aCookieData = vCookie.evalJSON();                    
+                    var aCookieData = vCookie.evalJSON();
                     <?php if ($this->isCartCountEnabled()): ?>
                         $$('<?php echo $this->getCartCountSelector(); ?>').each(function(el) {
                             el.update(aCookieData['cart_count'].toString().split('+').join(' '));
                         });
                     <?php endif; ?>
-                    
+
                     <?php if ($this->isCartSubtotalEnabled()): ?>
                         $$('<?php echo $this->getCartSubtotalSelector(); ?>').each(function(el) {
                             el.update(aCookieData['cart_subtotal'].toString().split('+').join(' '));
                         });
                     <?php endif; ?>
-                    
+
                     <?php if ($this->isWishlistCountEnabled()): ?>
                         $$('<?php echo $this->getWishlistCountSelector(); ?>').each(function(el) {
                             el.update(aCookieData['wishlist_count'].toString().split('+').join(' '));
                         });
                     <?php endif; ?>
-                    
+
                     <?php if ($this->isCustomerFirstNameEnabled()): ?>
                         $$('<?php echo $this->getCustomerFirstNameSelector(); ?>').each(function(el) {
                             el.update(aCookieData['customer_first_name'].split('+').join(' '));
                         });
                     <?php endif; ?>
-                    
+
                     <?php if ($this->isCustomerFullNameEnabled()): ?>
                         $$('<?php echo $this->getCustomerFullNameSelector(); ?>').each(function(el) {
                             el.update(aCookieData['customer_full_name'].split('+').join(' '));
                         });
                     <?php endif; ?>
-                    
+
                     <?php if ($this->isCustomerEmailEnabled()): ?>
                         $$('<?php echo $this->getCustomerEmailSelector(); ?>').each(function(el) {
                             el.update(aCookieData['customer_email'].split('+').join(' '));
@@ -51,21 +85,7 @@
                             $$('<?php echo $this->getLoggedInSelector(); ?>').invoke('hide');
                         }
                     <?php endif; ?>
-
-                    <?php if ($this->isFormKeyEnabled()): //Replace formkey placeholder with value stored in personalisation cookie ?>
-                        if(aCookieData['formkey']){
-                            $$('form').each(function (f) {
-                                f.action = f.action.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>',aCookieData['formkey']);
-                            });
-                            $$('a.link-wishlist, a.link-compare, a.add-to-cart').each(function (a) {
-                                a.href = a.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>',aCookieData['formkey']);
-                            });
-                            $$('input[name="form_key"]').each(function(input) {
-                                input.value = input.value.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>',aCookieData['formkey']);
-                            })
-                        }
-                    <?php endif; ?>
-
+                    VarnishCache.UpdateFormkeyPlaceholders();
                 }
             } else {
                 $$('<?php echo $this->getLoggedOutSelector(); ?>').invoke('show');

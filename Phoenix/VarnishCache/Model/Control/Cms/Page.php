@@ -65,7 +65,7 @@ class Phoenix_VarnishCache_Model_Control_Cms_Page
                 }
             }
 
-            $this->_getSession()->addSuccess(
+            Mage::helper('varnishcache')->addSuccess(
             	Mage::helper('varnishcache')->__('Varnish cache for "%s" has been purged.', $page->getTitle())
             );
 
