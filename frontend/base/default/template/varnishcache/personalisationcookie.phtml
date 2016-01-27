@@ -16,16 +16,19 @@
                         $$('form').each(function (f) {
                             f.action = f.action.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                         });
-                        $$('a.link-wishlist, a.add-wishlist, a.link-compare, a.add-to-cart').each(function (a) {
-                            a.href = a.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
-                        });
+
                         $$('input[name="form_key"]').each(function (input) {
                             input.value = input.value.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                         });
-                        $$('button.btn-cart').each(function(button) {
-                            if(button.hasAttribute('onclick')){
-                                var fn = button.readAttribute('onclick').replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
-                                button.setAttribute('onclick',fn);
+
+                        //generic form key replacer.
+                        var formKeyselector = '[href*=<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>] , [onclick*=<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>]';
+                        $$(formKeyselector).each(function (input) {
+                            if (input.href) {
+                                input.href = input.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                            }
+                            if (input.onclick && (typeof(input.onclick) == 'string')) {
+                                input.onclick = input.onclick.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                             }
                         });
                     }
