@@ -28,6 +28,16 @@
                                 button.setAttribute('onclick',fn);
                             }
                         });
+                        //generic form key replacer. Originally added to capture add to cart delete
+                        var formKeyselector = '[href*=<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>] , [onclick*=<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>]';
+                        $$(formKeyselector).each(function (input) {
+                            if (input.href) {
+                                input.href = input.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                            }
+                            if (input.onclick && (typeof(input.onclick) == 'string')) {
+                                input.onclick = input.onclick.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                            }
+                        });
                     }
                 }
             }
