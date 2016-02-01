@@ -27,8 +27,10 @@
                             if (input.href) {
                                 input.href = input.href.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
                             }
-                            if (input.onclick && (typeof(input.onclick) == 'string')) {
-                                input.onclick = input.onclick.replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                            if (input.onclick) {
+                                // readAttribute always return a string, calling input.onclick might sometimes return a function
+                                var fn = input.readAttribute('onclick').replace('<?php echo Phoenix_VarnishCache_Model_Observer::FORM_KEY_PLACEHOLDER ?>', aCookieData['formkey']);
+                                input.setAttribute('onclick',fn);
                             }
                         });
                     }
