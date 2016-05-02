@@ -54,4 +54,9 @@ class Phoenix_VarnishCache_Adminhtml_VarnishCacheController
         }
         $this->_redirect('*/cache/index');
     }
+
+    protected function _isAllowed()
+    {
+        return Mage::getSingleton('admin/session')->isAllowed('system/cache');
+    }
 }
