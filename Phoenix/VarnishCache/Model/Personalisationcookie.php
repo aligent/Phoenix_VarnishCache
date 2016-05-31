@@ -97,6 +97,9 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
             if ($vCookie === false) {
                 $this->updatePersonalisationCookie();
             }
+            if(($oRequest = Mage::app()->getRequest()) && $oRequest->getParam('___store')) {
+                $this->updatePersonalisationCookie();
+            }
         }
     }
 
