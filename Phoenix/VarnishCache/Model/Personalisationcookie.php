@@ -90,7 +90,14 @@ class Phoenix_VarnishCache_Model_Personalisationcookie {
     
     
     public function checkHasPersonalisationCookie() {
-        if (Mage::registry('personalisation_cookie_force_regenerate') === true) {
+        /**
+         * using $_GET instead of request object because that's how core uses it
+         * @see Mage_Core_Model_App::_checkGetStore()
+         *
+         * if store is switched regenerate personal cookie.
+         * otherwise mini-cart will display incorrect cart count
+         */
+        if (isset($_GET['___store']) || (Mage::registry('personalisation_cookie_force_regenerate') === true)) {
             $this->updatePersonalisationCookie();
         }elseif (Mage::getStoreConfig(self::CONFIG_SEND_TO_ALL_USERS)) {
             $vCookie = Mage::getModel('core/cookie')->get($this->getCookieName());
