@@ -48,37 +48,37 @@
                     var aCookieData = vCookie.evalJSON();
                     <?php if ($this->isCartCountEnabled()): ?>
                         $$('<?php echo $this->getCartCountSelector(); ?>').each(function(el) {
-                            el.update(aCookieData['cart_count'].toString().split('+').join(' '));
+                            el.update((aCookieData['cart_count'] || 0).toString().split('+').join(' '));
                         });
                     <?php endif; ?>
 
                     <?php if ($this->isCartSubtotalEnabled()): ?>
                         $$('<?php echo $this->getCartSubtotalSelector(); ?>').each(function(el) {
-                            el.update(aCookieData['cart_subtotal'].toString().split('+').join(' '));
+                            el.update((aCookieData['cart_subtotal'] || 0).toString().split('+').join(' '));
                         });
                     <?php endif; ?>
 
                     <?php if ($this->isWishlistCountEnabled()): ?>
                         $$('<?php echo $this->getWishlistCountSelector(); ?>').each(function(el) {
-                            el.update(aCookieData['wishlist_count'].toString().split('+').join(' '));
+                            el.update((aCookieData['wishlist_count'] || 0).toString().split('+').join(' '));
                         });
                     <?php endif; ?>
 
                     <?php if ($this->isCustomerFirstNameEnabled()): ?>
                         $$('<?php echo $this->getCustomerFirstNameSelector(); ?>').each(function(el) {
-                            el.update(aCookieData['customer_first_name'].split('+').join(' '));
+                            el.update((aCookieData['customer_first_name'] || '').split('+').join(' '));
                         });
                     <?php endif; ?>
 
                     <?php if ($this->isCustomerFullNameEnabled()): ?>
                         $$('<?php echo $this->getCustomerFullNameSelector(); ?>').each(function(el) {
-                            el.update(aCookieData['customer_full_name'].split('+').join(' '));
+                            el.update((aCookieData['customer_full_name'] || '').split('+').join(' '));
                         });
                     <?php endif; ?>
 
                     <?php if ($this->isCustomerEmailEnabled()): ?>
                         $$('<?php echo $this->getCustomerEmailSelector(); ?>').each(function(el) {
-                            el.update(aCookieData['customer_email'].split('+').join(' '));
+                            el.update((aCookieData['customer_email'] || '').split('+').join(' '));
                         });
                     <?php endif; ?>
                     <?php if ($this->isLoggedInToggleEnabled()): ?>
