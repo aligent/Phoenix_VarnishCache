@@ -20,6 +20,8 @@
 
 class Phoenix_VarnishCache_Model_Observer
 {
+    const CONFIG_ENABLED           = 'system/varnishcache/enabled';
+
     const SET_CACHE_HEADER_FLAG = 'VARNISH_CACHE_CONTROL_HEADERS_SET';
     const CONFIG_DISABLE_ON_ADD_MESSAGE     = 'system/varnishcache/disable_on_add_message';
     const CONFIG_DISABLE_ON_ADD_TO_CART     = 'system/varnishcache/disable_on_add_to_cart';
@@ -434,8 +436,11 @@ class Phoenix_VarnishCache_Model_Observer
          * This fix is redundant now because we're putting the placeholder into the formkey template directly.
          * It is safe to leave here though to catch any form keys that may have bypassed the formkey template.
          */
+        $isEnabled = Mage::getStoreConfigFlag(self::CONFIG_ENABLED);
+        $shouldReplaceFormKey = Mage::getStoreConfigFlag(self::CONFIG_ENABLED_FORM_KEY);
+
         // Don't replace the form key for AJAX requests. These should never be cached
-        if (!Mage::app()->getRequest()->isXmlHttpRequest()) {
+        if (($isEnabled && $shouldReplaceFormKey) && !Mage::app()->getRequest()->isXmlHttpRequest()) {
             $sessionKey = Mage::getSingleton('core/session')->getFormKey();
             $vbody = $observer->getResponse()->getBody();
             $observer->getResponse()->setBody(str_replace($sessionKey, self::FORM_KEY_PLACEHOLDER, $vbody));
